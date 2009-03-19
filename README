@@ -1,0 +1,53 @@
+This is Nutrimatic (http://nutrimatic.org/about.html).
+
+To build the source, run "./build.py".  You will need Python installed,
+and libxml2 (ubuntu: apt-get install libxml2-dev), and of course g++.
+
+To do anything useful, you will need to build an index from Wikipedia.
+
+1. Download the latest Wikipedia database dump (this is a 4.5GB file!)
+http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
+
+2. Convert it to a text file (this generates a 7GB file, and takes ~12 hours!):
+
+     bzcat enwiki-latest-pages-articles.xml.bz2 |
+     bin/remove-markup > wikipedia.txt
+
+   The remove-markup tool could probably be optimized to run faster...
+
+3. Index the text (this will generate many wikipedia.#####.index files):
+
+     bin/make-index wikipedia < wikipedia.txt
+
+   This also takes a while, but is less likely to have room for optimization.
+
+4. Merge the indexes; I normally do this in two stages:
+
+     for x in 000 001 002 003 004 005 006 007 008 009 010 011
+     do bin/merge-indexes 2 wikipedia.$x*.index wiki-merged.$x.index
+     done
+
+     bin/merge-indexes 5 wiki-merged.*.index wiki-merged.index
+
+   Adjust the 011 depending on the number of files make-index output for you.
+   The 2 and 5 are minimum phrase frequency cutoffs (how many times a word or
+   phrase must occur to be included in a subindex or final mreged index).
+
+5. Enjoy your new index:
+
+     bin/find-expr wiki-merged.index '<aciimnrttu>'
+
+If you want to set up the web interface, write a short shell wrapper that runs
+cgi-search.py with arguments pointing it at your binaries and data files, e.g.:
+
+     #!/bin/sh
+
+     exec $HOME/svn/nutrimatic/cgi-search.py \
+         $HOME/svn/nutrimatic/bin/find-expr \
+         $HOME/svn/nutrimatic/wiki-merged.index
+
+Then arrange for your web server to invoke that shell wrapper as a CGI script.
+
+Have fun,
+
+-- egnor@ofb.net

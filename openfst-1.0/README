@@ -1,0 +1,29 @@
+OpenFst - Release 1.0
+
+OpenFst is a library for constructing, combining, optimizing, and
+searching weighted finite-state transducers (FSTs).
+
+REQUIREMENTS:
+  This version is known to work under Linux, MacOS, and Solaris using 
+  g++ (>= 4.1). Expected to work wherever tr1 ordered sets/maps 
+  (<tr1/ordered_set>, <tr1/ordered_map>) and dlopen (<dlfcn.h>, -ldl) 
+  are available.
+  	
+INSTALLATION:
+  Follow the generic GNU build system instructions in ./INSTALL.
+
+  (Compiling with '-Wall -Wno-sign-compare' under g++ should give no
+  warnings from this library).
+
+USAGE:
+  Assuming you've installed under the default /usr/local, the FST
+  binaries are found on /usr/local/bin. To use in your own program,
+  include <fst/fstlib.h> and compile with '-I /usr/local/include'. 
+  Link against /usr/local/lib/libfst.so and -ldl. Set your
+  LD_LIBRARY_PATH (or equivalent) to contain /usr/local/lib. The
+  linking is, by default, dynamic so that the Fst and Arc type DSO
+  extensions can be used correctly if desired.
+
+DOCUMENTATION: 
+  See www.openfst.org for general documentation.
+  See ./NEWS for updates since the last release.
