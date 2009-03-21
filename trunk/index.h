@@ -10,7 +10,7 @@
   Each trie node is a table of letter, frequency, and child-node-offset values.
   For space efficiency, there are several node formats:
 
-  Leaf node (no letter has a child node) with byte-sized frequency values:
+  Parent of leaves (no child has children) with byte-sized frequency values:
 
     (letter frequency)* (num[01..1F] | num 00)
 
