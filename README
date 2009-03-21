@@ -1,4 +1,4 @@
-This is Nutrimatic (http://nutrimatic.org/about.html).
+This is Nutrimatic (http://nutrimatic.org/usage.html).
 
 To build the source, run "./build.py".  You will need Python installed,
 and libxml2 (ubuntu: apt-get install libxml2-dev), and of course g++.
@@ -28,6 +28,8 @@ http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
      done
 
      bin/merge-indexes 5 wiki-merged.*.index wiki-merged.index
+
+   This will generate 30GB of data!
 
    Adjust the 011 depending on the number of files make-index output for you.
    The 2 and 5 are minimum phrase frequency cutoffs (how many times a word or
