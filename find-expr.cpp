@@ -32,7 +32,15 @@ int main(int argc, char *argv[]) {
 
   StdVectorFst space;
   ParseExpr(" ", &space, true);
-  Concat(&fst, space);
+
+  StdVectorFst final;
+  ParseExpr(" ?", &final, true);
+  Concat(&final, fst);
+  Concat(&final, space);
+
+  ExprFilter filter(final);
+  SearchFilter::State start;
+  assert(filter.has_transition(filter.start(), ' ', &start));
 
   FILE *fp = fopen(argv[1], "rb");
   if (fp == NULL) {
@@ -41,8 +49,7 @@ int main(int argc, char *argv[]) {
   }
 
   IndexReader reader(fp);
-  ExprFilter filter(fst);
-  SearchDriver driver(&reader, &filter, filter.start(), 1e-6);
+  SearchDriver driver(&reader, &filter, start, 1e-6);
   PrintAll(&driver);
   return 0;
 }
