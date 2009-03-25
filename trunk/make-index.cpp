@@ -14,6 +14,7 @@ using namespace std;
 static const size_t CHAINS_PER_FILE = 1000000;
 static const size_t MAX_LINE_LENGTH = 65536;
 static const size_t HISTORY_WINDOW_SIZE = 40;
+static const size_t TITLE_MULTIPLIER = 10;
 
 static void do_buffer(char *text, int *len, vector<string>* out) {
   out->push_back(string(text, *len));
@@ -75,7 +76,9 @@ int main(int argc, char* argv[]) {
   char buf[MAX_LINE_LENGTH];
   vector<string> chains;
   while (fgets(buf, sizeof(buf), stdin)) {
-    if (strncmp(buf, "BEGIN ARTICLE:", 14) && strncmp(buf, "END ARTICLE:", 12))
+    if (!strncmp(buf, "BEGIN ARTICLE:", 14))
+      for (size_t i = 0; i < TITLE_MULTIPLIER; ++i) do_line(buf + 14, &chains);
+    else if (strncmp(buf, "END ARTICLE:", 12))
       do_line(buf, &chains);
     if (chains.size() >= CHAINS_PER_FILE)
       write_index(argv[1], filecount++, &chains);

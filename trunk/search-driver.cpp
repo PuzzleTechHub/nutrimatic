@@ -55,13 +55,13 @@ bool SearchDriver::step() {
     }
   }
 
-  if (filter->is_accepting(next.state)) {
+  if (filter->is_accepting(next.state) && next.crumb != -1) {
     size_t len = 0;
     for (int i = next.crumb; i >= 0; i = crumbs[i].parent)
       ++len;
 
     string buffer(len--, next.choice.ch);
-    for (int i = next.crumb; i > 0; i = crumbs[i].parent)
+    for (int i = next.crumb; i >= 0 && len > 0; i = crumbs[i].parent)
       buffer[--len] = crumbs[i].ch;
     assert(len == 0);
 

@@ -172,6 +172,7 @@ const char *ParseAtom(const char *p, StdMutableFst* fst, bool quoted) {
   }
 
   if (!quoted) {
+    fst->AddArc(start, StdArc(' ', ' ', Weight::One(), start));
     fst->AddArc(final, StdArc(' ', ' ', Weight::One(), final));
   }
 

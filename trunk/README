@@ -5,10 +5,10 @@ and libxml2 (ubuntu: apt-get install libxml2-dev), and of course g++.
 
 To do anything useful, you will need to build an index from Wikipedia.
 
-1. Download the latest Wikipedia database dump (this is a 4.5GB file!)
+1. Download the latest Wikipedia database dump (this is a 4.6GB file!):
 http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 
-2. Convert it to a text file (this generates a 7GB file, and takes ~12 hours!):
+2. Convert it to a text file (this generates a 9GB file, and takes ~12 hours!):
 
      bzcat enwiki-latest-pages-articles.xml.bz2 |
      bin/remove-markup > wikipedia.txt
@@ -20,18 +20,18 @@ http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
      bin/make-index wikipedia < wikipedia.txt
 
    This also takes a while, but is less likely to have room for optimization.
+   This will generate 40GB of data!
 
 4. Merge the indexes; I normally do this in two stages:
 
-     for x in 000 001 002 003 004 005 006 007 008 009 010 011
+     for x in 000 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016
      do bin/merge-indexes 2 wikipedia.$x*.index wiki-merged.$x.index
      done
 
      bin/merge-indexes 5 wiki-merged.*.index wiki-merged.index
 
-   This will generate 30GB of data!
-
-   Adjust the 011 depending on the number of files make-index output for you.
+   Adjust the 016 depending on the number of files make-index output for you
+   (or come up with your own way to construct subsets of files for merging).
    The 2 and 5 are minimum phrase frequency cutoffs (how many times a word or
    phrase must occur to be included in a subindex or final mreged index).
 
