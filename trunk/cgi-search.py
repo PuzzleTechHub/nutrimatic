@@ -28,6 +28,7 @@ HOME_PAGE_BEGIN = """
 <html><head>
   <title>Nutrimatic</title>
   <link rel="icon" type="image/vnd.microsoft.icon" href="http://nutrimatic.org/favicon.ico">
+  <meta name="google-site-verification" content="HYukS48AhdgGIgHndvQBdN5aoJJHHWnvMq_OJfcpVYg" />
 </head><body>
 <p><em>Almost, but not quite, entirely unlike tea.</em></p>
 <form action="" method=get>
@@ -90,7 +91,7 @@ RESULT_NONE = "<p><b>No results found, sorry.</b></p>"
 
 RESULT_PAGE = "<p><b>Page %(page)d:</b></p>"
 
-RESULT_NEXT = "<p><a href='?q=%(query)s&start=%(num)d'>page %(page)d &raquo;</a></p>"
+RESULT_NEXT = "<p><a href='?q=%(query)s&start=%(start)d&num=%(num)d'>page %(page)d &raquo;</a></p>"
 
 RESULT_PAGE_END = """
 </body></html>
@@ -150,13 +151,18 @@ if not fs.has_key("q"):  # No query, emit the home page
   print HOME_PAGE_END
   sys.exit(0)
 
-query = fs["q"].value
-start = fs.has_key("start") and int(fs["start"].value) or 0
+query = fs.getvalue("q", "")
+start = int(fs.getvalue("start", 0))
+num = int(fs.getvalue("num", PER_PAGE))
 
 # Shell out to the find-exec binary to get results
 soft, hard = resource.getrlimit(resource.RLIMIT_CPU)
 if soft == -1 or soft > 30: soft = 30
 resource.setrlimit(resource.RLIMIT_CPU, (soft, hard))
+
+soft, hard = resource.getrlimit(resource.RLIMIT_AS)
+if hard == -1 or hard > 2048 * 1024 * 1024: hard = 2048 * 1024 * 1024
+resource.setrlimit(resource.RLIMIT_AS, (hard, hard))
 
 proc = subprocess.Popen([binary, index, query],
     preexec_fn=lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL),
@@ -164,7 +170,7 @@ proc = subprocess.Popen([binary, index, query],
 
 print RESULT_PAGE_BEGIN % {"query": cgi.escape(query, quote=True)}
 
-num = 0
+rn = 0
 while 1:
   line = proc.stdout.readline()
   if not line:
@@ -178,7 +184,7 @@ while 1:
         print RESULT_ERROR % {"text": "find-expr killed: Signal %d" % -proc.returncode}
       else:
         print RESULT_ERROR % {"text": "find-expr died: Return code %d" % proc.returncode}
-    elif num > 0:
+    elif rn > 0:
       print RESULT_DONE
     else:
       print RESULT_NONE
@@ -192,18 +198,19 @@ while 1:
   if score == "#":
     continue
 
-  if start > 0 and num == start:
-    print RESULT_PAGE % {"page": num // PER_PAGE + 1}
+  if start > 0 and rn == start:
+    print RESULT_PAGE % {"page": rn // num + 1}
 
-  if num >= start + PER_PAGE:
+  if rn >= start + num:
     print RESULT_NEXT % {
         "query": urllib.quote(query),
+        "start": start + num,
         "num": num,
-        "page": num // PER_PAGE + 1,
+        "page": start // num + 2,
       }
     break
 
-  if num >= start:
+  if rn >= start:
     score = float(score)
     if score >= 1.0:
       size = 1.5 + math.log(score) / 5.0
@@ -213,6 +220,6 @@ while 1:
       size = 0
     print RESULT_ITEM % {"size": max(size, 0.4), "text": cgi.escape(text)}
 
-  num += 1
+  rn += 1
 
 print RESULT_PAGE_END

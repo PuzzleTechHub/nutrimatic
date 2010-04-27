@@ -40,7 +40,10 @@ int main(int argc, char *argv[]) {
 
   ExprFilter filter(final);
   SearchFilter::State start;
-  assert(filter.has_transition(filter.start(), ' ', &start));
+  if (!filter.has_transition(filter.start(), ' ', &start)) {
+    fprintf(stderr, "error: \"%s\" can't match anything\n", argv[2]);
+    return 1;
+  }
 
   FILE *fp = fopen(argv[1], "rb");
   if (fp == NULL) {
