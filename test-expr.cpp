@@ -94,6 +94,11 @@ static void TestIndex(const char *expr, const char *yes, const char *no) {
 
 int main(int argc, char *argv[]) {
   TestIndex(
+      "foo&bar",
+      NULL,
+      " ");
+
+  TestIndex(
       "\"(((((m?o)?c)?h)?i)t?)_(h(a(t(o(ry?)?)?)?)?)?&_{5,}\" ",
       "chitchat ",
       "itch ");
@@ -134,9 +139,9 @@ int main(int argc, char *argv[]) {
       "merge what ");
 
   TestIndex(
-     "<het><ral><seg><tan><rut><bla><oody><afl><ndi><cin><awe><ter> ",
-     "the largest natural body of land in ice water ",
-     "the largest natural body of water in iceland ");
+      "<het><ral><seg><tan><rut><bla><oody><afl><ndi><cin><awe><ter> ",
+      "the largest natural body of land in ice water ",
+      "the largest natural body of water in iceland ");
 
   return 0;
 }

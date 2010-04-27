@@ -14,6 +14,10 @@ IndexReader::IndexReader(FILE* fp) {
   length = ftell(fp);
   void* map = mmap(NULL, length, PROT_READ, MAP_SHARED, fileno(fp), 0);
   data = (const unsigned char*) map;
+  if (map == MAP_FAILED) {
+    fprintf(stderr, "error: can't mmap data file (length %d)\n", length);
+    exit(1);
+  }
 
   // scan the top level nodes to compute the total
   vector<Choice> top;
