@@ -88,10 +88,6 @@ int main(int argc, char *argv[]) {
   IndexReader reader(fp);
   PhoneFilter filter(argv[2]);
   SearchDriver driver(&reader, &filter, 0, 1e-6);
-  while (driver.text != NULL) {
-    printf("%.08g %s\n", driver.score, driver.text);
-    driver.next();
-  }
-
+  PrintAll(&driver);
   return 0;
 }

@@ -65,7 +65,7 @@ struct FrequencyCutoffWriter {
     saved.resize(same);
     if (text != NULL) {
       saved.append(text + same);
-      while (char *space = strchr(text + same, ' ')) {
+      while (const char *space = strchr(text + same, ' ')) {
         same = space - text + 1;
         words.push_back(make_pair(same, 0));
       }
