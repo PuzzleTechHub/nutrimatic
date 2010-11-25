@@ -1,7 +1,10 @@
 This is Nutrimatic (http://nutrimatic.org/usage.html).
 
-To build the source, run "./build.py".  You will need Python installed,
-and libxml2 (ubuntu: apt-get install libxml2-dev), and of course g++.
+To build the source, run "./build.py".  You will need the following installed:
+   * Python
+   * g++
+   * libxml2 (ubuntu: apt-get install libxml2-dev)
+   * libtre (ubuntu: apt-get install libtre-dev)
 
 To do anything useful, you will need to build an index from Wikipedia.
 
