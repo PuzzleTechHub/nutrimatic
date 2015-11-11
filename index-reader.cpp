@@ -36,7 +36,7 @@ IndexReader::~IndexReader() {
   munmap((void*) data, length);
 }
 
-int IndexReader::children(off_t n, int count,
+int IndexReader::children(off_t n, int64_t count,
                            char min, char max,
                            vector<Choice>* out) const {
   if (n == (off_t) -1) return count;
@@ -57,7 +57,7 @@ int IndexReader::children(off_t n, int count,
     return 0;
   }
 
-  int count_size = (num < 0xC0) ? 1 : (num < 0xE0) ? 2 : 4;
+  int count_size = (num < 0xC0) ? 1 : (num < 0xE0) ? 2 : 8;
   int offset_size = (num < 0x20) ? 0 : (num < 0xA0) ? 1 : (num < 0xE0) ? 2 : 8;
 
   num = num & 0x1F;
@@ -97,7 +97,7 @@ int IndexReader::children(off_t n, int count,
     } else {
       off_t offset = 0;
       for (int j = 0; j < offset_size; ++j)
-        offset |= data[p + 1 + count_size + j] << (j * 8);
+        offset |= (uint64_t)(data[p + 1 + count_size + j]) << (j * 8);
       assert(offset_size == sizeof(off_t));
       if (offset == (off_t) -1)
         choice.next = (off_t) -1;

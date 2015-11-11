@@ -6,7 +6,7 @@
 
 using namespace std;
 
-IndexWalker::IndexWalker(const IndexReader* r, off_t node, int count):
+IndexWalker::IndexWalker(const IndexReader* r, off_t node, int64_t count):
     reader(r), buf(NULL), buf_alloc(0) {
   stack.resize((stack_size = 1));
   stack[0].next = 0;

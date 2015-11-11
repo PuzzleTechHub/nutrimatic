@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   IndexReader reader(fp);
   IndexWalker walker(&reader, reader.root(), reader.count());
   while (walker.text != NULL) {
-    printf("%5d [%s]\n", walker.count, walker.text);
+    printf("%5ld [%s]\n", walker.count, walker.text);
     walker.next();
   }
 

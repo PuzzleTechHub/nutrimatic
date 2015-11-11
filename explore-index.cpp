@@ -18,7 +18,7 @@ bool by_count(IndexReader::Choice const& a, IndexReader::Choice const& b) {
   return a.count > b.count;
 }
 
-static void walk(IndexReader const& reader, off_t node, int count,
+static void walk(IndexReader const& reader, off_t node, int64_t count,
                  const char *path, int depth, string *sofar) {
   if (depth == 0) return;
 
@@ -34,7 +34,7 @@ static void walk(IndexReader const& reader, off_t node, int count,
 
   for (size_t i = 0; i < children.size(); ++i) {
     sofar->push_back(children[i].ch);
-    printf("%s (%d) @%zd\n", sofar->c_str(),
+    printf("%s (%ld) @%zd\n", sofar->c_str(),
         children[i].count, children[i].next);
     walk(reader, children[i].next, children[i].count, path, depth - 1, sofar);
     sofar->resize(sofar->size() - 1);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 
   IndexReader reader(input);
 
-  printf("Root (%d) @%zd\n", reader.count(), reader.root());
+  printf("Root (%ld) @%zd\n", reader.count(), reader.root());
 
   int depth = strlen(argv[2]);
   if (argc > 3) {
