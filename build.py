@@ -13,7 +13,7 @@ import sys
 from glob import glob
 from memoize import memoize
 
-CFLAGS = "-g -O6 -Wall -Werror"
+CFLAGS = "-std=c++14 -g -O6 -Wall -Werror -Wno-error=unused-local-typedefs -Wno-error=maybe-uninitialized"
 LIBS = ""
 
 def run(cmd):
@@ -48,11 +48,11 @@ def compile(main, others=[], cflags=CFLAGS, libs=LIBS):
 # and re-invoke configure/make only if any of them change.
 
 run("mkdir -p bin/openfst tmp/openfst")
-run("cd tmp/openfst && ../../openfst-1.0/configure --prefix=%s/bin/openfst" % os.getcwd())
+run("cd tmp/openfst && ../../openfst-1.5.0/configure --enable-static --enable-shared=no --prefix=%s/bin/openfst" % os.getcwd())
 run("make -C tmp/openfst install")
 run("cp tmp/openfst/config.h bin/openfst/include/config.h")
 fst_cflags = "-Ibin/openfst/include -Wno-sign-compare"
-fst_libs = "bin/openfst/lib/libfst.a -lpthread"
+fst_libs = "bin/openfst/lib/libfst.a -lpthread -ldl"
 
 #####
 # Build the Nutrimatic binaries.
