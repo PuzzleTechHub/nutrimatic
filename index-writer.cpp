@@ -76,7 +76,7 @@ IndexWriter::Saved IndexWriter::write(FILE* fp, Pending const& in) {
     out.count += in.choices[i].count;
     max_count = max(max_count, in.choices[i].count);
     if (in.choices[i].pos != none)
-      max_offset = max(max_offset, max(pos - in.choices[i].pos, 1ll));
+      max_offset = max(max_offset, max(pos - in.choices[i].pos, 1L));
   }
 
   int mode;

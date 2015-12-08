@@ -73,7 +73,7 @@ class IndexReader {
 
  private:
   const unsigned char* data;
-  size_t length;
+  ssize_t length;
   int total;
   void fail(off_t n, const char* message) const;
 };

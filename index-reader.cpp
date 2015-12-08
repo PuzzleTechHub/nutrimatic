@@ -15,7 +15,7 @@ IndexReader::IndexReader(FILE* fp) {
   void* map = mmap(NULL, length, PROT_READ, MAP_SHARED, fileno(fp), 0);
   data = (const unsigned char*) map;
   if (map == MAP_FAILED) {
-    fprintf(stderr, "error: can't mmap data file (length %d)\n", length);
+    fprintf(stderr, "error: can't mmap data file (length %zu)\n", length);
     exit(1);
   }
 
@@ -66,7 +66,7 @@ int IndexReader::children(off_t n, int count,
     num = data[--n];
   }
 
-  size_t size = count_size + offset_size + 1;
+  ssize_t size = count_size + offset_size + 1;
   if (num == 0 || n < num * size) fail(n, "bad size");
 
   off_t start = n - num * size;
@@ -115,6 +115,6 @@ int IndexReader::children(off_t n, int count,
 }
 
 void IndexReader::fail(off_t n, const char* message) const {
-  fprintf(stderr, "error: pos %llu = 0x%02x: %s\n", n, data[n], message);
+  fprintf(stderr, "error: pos %zd = 0x%02x: %s\n", n, data[n], message);
   exit(1);
 }
