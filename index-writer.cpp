@@ -13,7 +13,7 @@ IndexWriter::IndexWriter(FILE *f): fp(f), pos(ftello(fp)) {
   chain[0].count = 0;
 }
 
-void IndexWriter::next(const char *text, int same, int count) {
+void IndexWriter::next(const char *text, int same, int64_t count) {
   assert((text == NULL && count == 0 && same == 0) ||
          (text != NULL && count > 0));
   while (text != NULL && same + 1 < int(chain_size) &&
@@ -68,7 +68,7 @@ IndexWriter::Saved IndexWriter::write(FILE* fp, Pending const& in) {
     return out;
   }
 
-  int max_count = 0;
+  int64_t max_count = 0;
   off_t max_offset = 0;
   for (size_t i = 0; i < in.choices.size(); ++i) {
     assert(i == 0 || in.choices[i].ch > in.choices[i - 1].ch);
@@ -76,7 +76,7 @@ IndexWriter::Saved IndexWriter::write(FILE* fp, Pending const& in) {
     out.count += in.choices[i].count;
     max_count = max(max_count, in.choices[i].count);
     if (in.choices[i].pos != none)
-      max_offset = max(max_offset, max(pos - in.choices[i].pos, 1ll));
+      max_offset = max(max_offset, max(pos - in.choices[i].pos, 1L));
   }
 
   int mode;
@@ -120,13 +120,13 @@ IndexWriter::Saved IndexWriter::write(FILE* fp, Pending const& in) {
     mode = 0xE0;
     for (size_t i = 0; i < in.choices.size(); ++i) {
       fputc(in.choices[i].ch, fp);
-      for (int j = 0; j < 4; ++j)
+      for (int j = 0; j < 8; ++j)
         fputc(in.choices[i].count >> (j * 8), fp);
       off_t op = in.choices[i].pos == none ? -1 : pos - in.choices[i].pos;
       for (int j = 0; j < 8; ++j)
         fputc(op >> (j * 8), fp);
     }
-    pos += 13 * in.choices.size();
+    pos += 17 * in.choices.size();
   }
 
   assert(in.choices.size() <= 0x100);

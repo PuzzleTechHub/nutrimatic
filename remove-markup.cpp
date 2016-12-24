@@ -44,7 +44,7 @@ static bool replace_regex(string* in, regex_t const& rx, const char *repl) {
     for (int i = 0; repl[i] != '\0'; ++i) {
       if (repl[i] == '\\' && repl[i+1] >= '0' && repl[i+1] <= '9') {
 	if (repl[i+1] - '0' > int(rx.re_nsub)) {
-	  fprintf(stderr, "\"%s\": only %d subexpressions\n", repl, rx.re_nsub);
+	  fprintf(stderr, "\"%s\": only %zd subexpressions\n", repl, rx.re_nsub);
 	  exit(1);
 	}
 

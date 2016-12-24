@@ -29,7 +29,7 @@ struct FrequencyCutoffWriter {
     words.push_back(make_pair(0, 0));
   }
 
-  void next(const char *text, int same, int count) {
+  void next(const char *text, int same, int64_t count) {
     if (text != NULL) {
       while (same < int(saved.size()) && text[same] == saved[same]) ++same;
       assert(memcmp(saved.c_str(), text, same) == 0);
@@ -41,7 +41,7 @@ struct FrequencyCutoffWriter {
 
     assert(!words.empty());
     while (words.back().first > (size_t) same) {
-      pair<size_t, int> last_word = words.back();
+      pair<size_t, int64_t> last_word = words.back();
       words.pop_back();
 
       assert(saved.size() >= last_word.first);
@@ -80,7 +80,7 @@ struct FrequencyCutoffWriter {
   const int cutoff;
   size_t output_same;
   string saved;
-  vector<pair<size_t, int> > words;
+  vector<pair<size_t, int64_t> > words;
 };
 
 int main(int argc, char *argv[]) {

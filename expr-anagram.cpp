@@ -91,9 +91,9 @@ const char *ParseAnagram(const char *p, StdMutableFst* out, bool quoted) {
   CollapseIdentical(&parts);
 
   if (getenv("DEBUG_FST") != NULL) {
-    fprintf(stderr, "anagram: %d unique parts\n", parts.size());
+    fprintf(stderr, "anagram: %zd unique parts\n", parts.size());
     for (size_t i = 0; i < parts.size(); ++i) {
-      fprintf(stderr, "  #%d: %d x %d states\n", i,
+      fprintf(stderr, "  #%zu: %d x %d states\n", i,
           parts[i].count,
           parts[i].expr.NumStates());
     }
