@@ -8,10 +8,10 @@ To build the source, run "./build.py".  You will need the following installed:
 
 To do anything useful, you will need to build an index from Wikipedia.
 
-1. Download the latest Wikipedia database dump (this is a 4.6GB file!):
-http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
+1. Download the latest Wikipedia database dump (this is a ~13GB file!):
+https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 
-2. Convert it to a text file (this generates a 9GB file, and takes ~12 hours!):
+2. Convert it to a text file (this generates a ~20GB file, and takes ~15 hours!):
 
      bzcat enwiki-latest-pages-articles.xml.bz2 |
      bin/remove-markup > wikipedia.txt
