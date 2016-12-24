@@ -35,7 +35,7 @@ HOME_PAGE_BEGIN = """
 </head><body>
 <p><em>Almost, but not quite, entirely unlike tea.</em></p>
 <form action="" method=get>
-<input type=text name=q size=45 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+<input type=search name=q size=45 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 <input type=submit name=go value="Go">
 </form>
 <p>Matches patterns against a dictionary of words and phrases
@@ -81,7 +81,7 @@ RESULT_PAGE_BEGIN = """
 </head>
 <body>
 <form action="" method=get>
-<input type=text name=q value="%(query)s" size=45 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+<input type=search name=q value="%(query)s" size=45 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 <input type=submit name=go value="Go">
 </form>
 """
