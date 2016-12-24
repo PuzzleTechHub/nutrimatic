@@ -37,8 +37,8 @@ IndexReader::~IndexReader() {
 }
 
 int IndexReader::children(off_t n, int64_t count,
-                           char min, char max,
-                           vector<Choice>* out) const {
+                          char min, char max,
+                          vector<Choice>* out) const {
   if (n == (off_t) -1) return count;
 
   Choice choice;

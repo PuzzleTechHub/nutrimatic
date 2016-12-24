@@ -2,12 +2,14 @@
 #
 # Web interface to Nutrimatic find-expr.  (As seen on http://nutrimatic.org/)
 #
-# Expects to be run with the pathnames to the find-expr binary and the index.
+# Expects to be run with $NUTRIMATIC_FIND_EXPR and $NUTRIMATIC_INDEX set to the
+# pathnames of the find-expr binary and the merged .index file, respectively.
 # Normally this is done with a shell script wrapper which the web server runs.
 
 import cgi
 import cgitb; cgitb.enable()
 import math
+import os
 import resource
 import signal
 import subprocess
@@ -25,14 +27,15 @@ PER_PAGE = 100
 # HTML output templates
 
 HOME_PAGE_BEGIN = """
-<html><head>
+<html lang="en"><head>
   <title>Nutrimatic</title>
-  <link rel="icon" type="image/vnd.microsoft.icon" href="http://nutrimatic.org/favicon.ico">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-site-verification" content="HYukS48AhdgGIgHndvQBdN5aoJJHHWnvMq_OJfcpVYg" />
 </head><body>
 <p><em>Almost, but not quite, entirely unlike tea.</em></p>
 <form action="" method=get>
-<input type=text name=q size=45>
+<input type=text name=q size=45 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 <input type=submit name=go value="Go">
 </form>
 <p>Matches patterns against a dictionary of words and phrases
@@ -60,7 +63,7 @@ HOME_PAGE_TABLE_END = """
 HOME_PAGE_END = """
 <h3>More</h3>
 <ul>
-<li><a href="http://nutrimatic.org/usage.html">Usage guide</a>: usage tips,
+<li><a href="/usage.html">Usage guide</a>: usage tips,
 worked examples, why it's slow.
 <li><a href="http://code.google.com/p/nutrimatic/source/checkout">Source code</a>:
 badly documented, but see the <a
@@ -71,10 +74,14 @@ href="http://code.google.com/p/nutrimatic/source/browse/trunk/README">README</a>
 """
 
 RESULT_PAGE_BEGIN = """
-<html><head><title>%(query)s - Nutrimatic</title></head>
+<html lang="en"><head>
+  <title>%(query)s - Nutrimatic</title>
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 <body>
 <form action="" method=get>
-<input type=text name=q value="%(query)s" size=45>
+<input type=text name=q value="%(query)s" size=45 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 <input type=submit name=go value="Go">
 </form>
 """
@@ -83,7 +90,10 @@ RESULT_ITEM = "<span style='font-size: %(size)fem'>%(text)s</span><br>"
 
 RESULT_ERROR = "<p><b><font color=red>%(text)s</font></b></p>"
 
-RESULT_TIMEOUT = "<p><b>Computation limit reached.</b></p>"
+RESULT_TIMEOUT = """
+<p><b>Computation limit reached.</b>
+<a href='?q=%(query)s&comp=%(next_max)d'>Try %(even)s harder &raquo;</a></p>
+"""
 
 RESULT_DONE = "<p><b>No more results found.</b></p>"
 
@@ -118,14 +128,10 @@ EXAMPLES = [
   ("\"C*aC*eC*iC*oC*uC*yC*\"", "facetiously"),
   ("867-####", "for a good time call"),
   ("\"_ ___ ___ _*burger\"", "lol"),
-  ("<aaaabbckmor>", "potus"),
 ]
 
-if len(sys.argv) != 3:
-  print >>sys.stderr, "usage: cgi-search.py /path/to/find-expr /path/to/index"
-  sys.exit(1)
-
-me, binary, index = sys.argv
+binary = os.environ["NUTRIMATIC_FIND_EXPR"]
+index = os.environ["NUTRIMATIC_INDEX"]
 
 print 'Content-type: text/html'
 print
@@ -154,6 +160,7 @@ if not fs.has_key("q"):  # No query, emit the home page
 query = fs.getvalue("q", "")
 start = int(fs.getvalue("start", 0))
 num = int(fs.getvalue("num", PER_PAGE))
+max_computation = int(fs.getvalue("comp", MAX_COMPUTATION))
 
 # Shell out to the find-exec binary to get results
 soft, hard = resource.getrlimit(resource.RLIMIT_CPU)
@@ -191,8 +198,12 @@ while 1:
     break
 
   score, text = line.strip().split(" ", 1)
-  if score == "#" and int(text) >= MAX_COMPUTATION:
-    print RESULT_TIMEOUT
+  if score == "#" and int(text) >= max_computation:
+    print RESULT_TIMEOUT % {
+        "query": urllib.quote(query),
+        "even": "even" if max_computation > MAX_COMPUTATION else "",
+        "next_max": 2 * max_computation,
+    }
     break
 
   if score == "#":

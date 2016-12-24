@@ -47,9 +47,9 @@ cgi-search.py with arguments pointing it at your binaries and data files, e.g.:
 
      #!/bin/sh
 
-     exec $HOME/svn/nutrimatic/cgi-search.py \
-         $HOME/svn/nutrimatic/bin/find-expr \
-         $HOME/svn/nutrimatic/wiki-merged.index
+     export NUTRIMATIC_FIND_EXPR=/path/to/nutrimatic/bin/find-expr
+     export NUTRIMATIC_INDEX=/path/to/nutrimatic/data/wiki-merged.index
+     exec /path/to/nutrimatic/cgi-search.py
 
 Then arrange for your web server to invoke that shell wrapper as a CGI script.
 
