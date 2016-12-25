@@ -75,15 +75,25 @@ int main(int argc, char* argv[]) {
   int filecount = 0;
   char buf[MAX_LINE_LENGTH];
   vector<string> chains;
+  bool next_line_is_title = false;
   while (fgets(buf, sizeof(buf), stdin)) {
-    if (!strncmp(buf, "BEGIN ARTICLE:", 14))
+    // Handle both output from remove-markup (with BEGIN ARTICLE: and
+    // END ARTICLE: lines) and WikiExtractor.py (with <doc ...> and </doc>).
+    if (!strncmp(buf, "BEGIN ARTICLE:", 14)) {
       for (size_t i = 0; i < TITLE_MULTIPLIER; ++i) do_line(buf + 14, &chains);
-    else if (strncmp(buf, "END ARTICLE:", 12))
+    } else if (!strncmp(buf, "<doc ", 5)) {
+      next_line_is_title = true;
+    } else if (next_line_is_title) {
+      for (size_t i = 0; i < TITLE_MULTIPLIER; ++i) do_line(buf, &chains);
+      next_line_is_title = false;
+    } else if (strncmp(buf, "END ARTICLE:", 12) && strncmp(buf, "</doc>", 6)) {
       do_line(buf, &chains);
+    }
+
     if (chains.size() >= CHAINS_PER_FILE)
       write_index(argv[1], filecount++, &chains);
   }
 
-  write_index(argv[1], filecount++, &chains);
+  if (chains.size() > 0) write_index(argv[1], filecount++, &chains);
   return 0;
 }

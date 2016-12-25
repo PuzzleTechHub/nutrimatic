@@ -13,7 +13,7 @@ import sys
 from glob import glob
 from memoize import memoize
 
-CFLAGS = "-std=c++14 -g -O6 -Wall -Werror -Wno-error=unused-local-typedefs -Wno-error=maybe-uninitialized"
+CFLAGS = "-std=c++11 -g -O6 -Wall -Werror -Wno-unused-local-typedefs -Wno-maybe-uninitialized"
 LIBS = ""
 
 def run(cmd):

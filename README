@@ -9,34 +9,37 @@ To build the source, run "./build.py".  You will need the following installed:
 To do anything useful, you will need to build an index from Wikipedia.
 
 1. Download the latest Wikipedia database dump (this is a ~13GB file!):
-https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 
-2. Convert it to a text file (this generates a ~20GB file, and takes ~15 hours!):
+     wget https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 
-     bzcat enwiki-latest-pages-articles.xml.bz2 |
-     bin/remove-markup > wikipedia.txt
+2. Extract the text from the articles using Wikipedia Extractor
+   (this generates ~12GB of text, and can take several hours!):
 
-   The remove-markup tool could probably be optimized to run faster...
+     # See http://medialab.di.unipi.it/wiki/Wikipedia_Extractor
+     wget https://raw.githubusercontent.com/attardi/wikiextractor/master/WikiExtractor.py
+     python WikiExtractor.py enwiki-latest-pages-articles.xml.bz2
 
-3. Index the text (this will generate many wikipedia.#####.index files):
+   This will write many files named text/??/wiki_??.
 
-     bin/make-index wikipedia < wikipedia.txt
+3. Index the text (this generates ~50GB of data, and can also take hours!):
 
-   This also takes a while, but is less likely to have room for optimization.
-   This will generate 40GB of data!
+     find text -type f | xargs cat | bin/make-index wikipedia
+
+   This will write many files named wikipedia.?????.index.
+   (You can break this up; run make-index several times with different
+   sets of input files, replacing "wikipedia" with unique names each time.)
 
 4. Merge the indexes; I normally do this in two stages:
 
-     for x in 000 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016
-     do bin/merge-indexes 2 wikipedia.$x*.index wiki-merged.$x.index
+     for x in 0 1 2 3 4 5 6 7 8 9
+     do bin/merge-indexes 2 wikipedia.????$x.index wiki-merged.$x.index
      done
 
      bin/merge-indexes 5 wiki-merged.*.index wiki-merged.index
 
-   Adjust the 016 depending on the number of files make-index output for you
-   (or come up with your own way to construct subsets of files for merging).
-   The 2 and 5 are minimum phrase frequency cutoffs (how many times a word or
-   phrase must occur to be included in a subindex or final mreged index).
+   There's nothing magical about this appproach with 10 batches, you can use
+   any way you like to merge the files. The 2 and 5 numbers are minimum phrase
+   frequency cutoffs (how many times a string must occur to be included).
 
 5. Enjoy your new index:
 
