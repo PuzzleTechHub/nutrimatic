@@ -157,7 +157,7 @@ if not fs.has_key("q"):  # No query, emit the home page
   print HOME_PAGE_END
   sys.exit(0)
 
-query = fs.getvalue("q", "")
+query = fs.getvalue("q", "").strip()
 start = int(fs.getvalue("start", 0))
 num = int(fs.getvalue("num", PER_PAGE))
 max_computation = int(fs.getvalue("comp", MAX_COMPUTATION))
