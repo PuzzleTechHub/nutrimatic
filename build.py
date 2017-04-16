@@ -9,37 +9,34 @@
 # at the end if you add new programs or source files.
 
 import os
+import pipes
 import sys
 from glob import glob
 from memoize import memoize
 
-CFLAGS = "-std=c++11 -g -O6 -Wall -Werror -Wno-unused-local-typedefs -Wno-maybe-uninitialized"
+CFLAGS = "-std=c++11 -g -O6 -Wall -Werror -Wno-unused-local-typedefs -Wno-uninitialized"
 LIBS = ""
 
 def run(cmd):
   """ Run a shell command with memoization, exit if it fails """
-  status = memoize(cmd)
+  status = memoize(('sh', '-c', cmd))
   if status: sys.exit(1)
-
-def escape(s):
-  """ Escape a string for the shell """
-  return "'%s'" % s.replace("'", "'\\''")
 
 def getoutput(cmd):
   """ Capture and return the output from a command """
   tmp = "tmp/%s" % cmd.replace("/", "_")
-  run("%s >%s" % (cmd, escape(tmp)))
+  run("%s >%s" % (cmd, pipes.quote(tmp)))
   return file(tmp).read().strip()
 
 def compile(main, others=[], cflags=CFLAGS, libs=LIBS):
   """ Build a C++ binary from source """
   objs = []
   for source in [main] + others:
-    objs.append(escape("tmp/%s.o" % source))
-    run("g++ -o %s %s -c %s" % (objs[-1], cflags, escape(source)))
+    objs.append(pipes.quote("tmp/%s.o" % source))
+    run("g++ -o %s %s -c %s" % (objs[-1], cflags, pipes.quote(source)))
 
   bin = "bin/%s" % main.replace(".cpp", "")
-  run("g++ -o %s %s %s" % (escape(bin), " ".join(objs), libs))
+  run("g++ -o %s %s %s" % (pipes.quote(bin), " ".join(objs), libs))
 
 #####
 # Build the bundled openfst library in tmp/openfst, install it in bin/openfst
