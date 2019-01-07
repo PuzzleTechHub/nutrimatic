@@ -115,7 +115,8 @@ SYNTAX = [
   ("[], (), {}, |, ., ?, *, +", "same as regexp"),
   ("\"expr\"", "forbid word breaks without a space or hyphen"),
   ("expr&expr", "both expressions must match"),
-  ("<aaagmnr>, <(gram)(ana)>", "anagram of contents"),
+  ("<aaagmnr>, <(gram)(ana)>",
+   "anagram of contents (<a href=usage.html#syntax_anagram>note warnings</a>)"),
   ("_ (underscore)", "alphanumeric, not space: [a-z0-9]"),
   ("# (number sign)", "digit: [0-9]"),
   ("- (hyphen)", "optional space: ( ?)"),
@@ -140,10 +141,10 @@ fs = cgi.FieldStorage()
 if not fs.has_key("q"):  # No query, emit the home page
   print HOME_PAGE_BEGIN
   print HOME_PAGE_TABLE_BEGIN % {"title": "Syntax"}
-  for syntax, text in SYNTAX:
+  for syntax, html in SYNTAX:
     print HOME_PAGE_SYNTAX_ROW % {
         "syntax": cgi.escape(syntax).replace(" ", "&nbsp;"),
-        "text": cgi.escape(text),
+        "text": html,
       }
   print HOME_PAGE_TABLE_END
   print HOME_PAGE_TABLE_BEGIN % {"title": "Examples"}

@@ -1,5 +1,6 @@
 .deps
 *.pyc
+*.index
 bin
 tmp
 autom4te.cache
