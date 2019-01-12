@@ -45,7 +45,7 @@ def compile(main, others=[], cflags=CFLAGS, libs=LIBS):
 # and re-invoke configure/make only if any of them change.
 
 run("mkdir -p bin/openfst tmp/openfst")
-run("cd tmp/openfst && ../../openfst-1.5.0/configure --enable-static --enable-shared=no --prefix=%s/bin/openfst" % os.getcwd())
+run("cd tmp/openfst && ../../openfst-1.7.0/configure --enable-static --enable-shared=no --prefix=%s/bin/openfst" % os.getcwd())
 run("make -C tmp/openfst install")
 run("cp tmp/openfst/config.h bin/openfst/include/config.h")
 fst_cflags = "-Ibin/openfst/include -Wno-sign-compare"
