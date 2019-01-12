@@ -1,6 +1,6 @@
-.deps
+/.deps
+/bin
+/tmp
 *.pyc
 *.index
-bin
-tmp
 autom4te.cache
