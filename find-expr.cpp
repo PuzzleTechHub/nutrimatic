@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 using namespace fst;
+using std::string;
 
 int main(int argc, char *argv[]) {
   if (argc != 3 || strlen(argv[2]) == 0) {

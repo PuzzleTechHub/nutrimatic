@@ -5,7 +5,7 @@
 
 #include <queue>
 #include <vector>
-
+using std::vector;
 /*
   Index format: The index is series of trie nodes, parents following children.
   Each trie node is a table of letter, frequency, and child-node-offset values.

@@ -16,6 +16,7 @@
 #include <vector>
 
 using namespace fst;
+using std::vector;
 
 typedef StdArc::StateId State;
 typedef StdArc::Weight Weight;

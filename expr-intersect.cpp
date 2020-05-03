@@ -12,6 +12,7 @@
 #include <time.h>
 
 using namespace fst;
+using std::vector;
 
 void IntersectExprs(
     vector<StdVectorFst> const& in,

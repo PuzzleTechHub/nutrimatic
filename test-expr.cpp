@@ -12,6 +12,8 @@
 #include <stdlib.h>
 
 using namespace fst;
+using std::string;
+using std::vector;
 
 static void TestIndex(const char *expr, const char *yes, const char *no) {
   // Write index
