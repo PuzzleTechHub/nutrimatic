@@ -8,7 +8,7 @@ To build the source, run "./build.py".  You will need the following installed:
 
 To do anything useful, you will need to build an index from Wikipedia.
 
-1. Download the latest Wikipedia database dump (this is a ~13GB file!):
+1. Download the latest Wikipedia database dump (this is a ~17GB file!):
 
      wget https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 
