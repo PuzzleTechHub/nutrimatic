@@ -1,0 +1,13 @@
+#include <fst/flags.h>
+#include <fst/weight.h>
+
+DEFINE_string(begin_key, "",
+              "First key to extract (def: first key in archive)");
+DEFINE_string(end_key, "", "Last key to extract (def: last key in archive)");
+DEFINE_double(delta, fst::kDelta, "Comparison/quantization delta");
+
+int farisomorphic_main(int argc, char **argv);
+
+int main(int argc, char **argv) {
+  return farisomorphic_main(argc, argv);
+}
