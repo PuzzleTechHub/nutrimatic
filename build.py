@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Build Nutrimatic binaries.
 #
@@ -26,7 +26,7 @@ def getoutput(cmd):
   """ Capture and return the output from a command """
   tmp = "tmp/%s" % cmd.replace("/", "_")
   run("%s >%s" % (cmd, pipes.quote(tmp)))
-  return file(tmp).read().strip()
+  return open(tmp).read().strip()
 
 def compile(main, others=[], cflags=CFLAGS, libs=LIBS):
   """ Build a C++ binary from source """

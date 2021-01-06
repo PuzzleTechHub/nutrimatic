@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Web interface to Nutrimatic find-expr.  (As seen on http://nutrimatic.org/)
 #
@@ -8,6 +8,7 @@
 
 import cgi
 import cgitb; cgitb.enable()
+import html
 import math
 import os
 import resource
@@ -134,28 +135,28 @@ EXAMPLES = [
 binary = os.environ["NUTRIMATIC_FIND_EXPR"]
 index = os.environ["NUTRIMATIC_INDEX"]
 
-print 'Content-type: text/html'
-print
+print('Content-type: text/html')
+print()
 
 fs = cgi.FieldStorage()
-if not fs.has_key("q"):  # No query, emit the home page
-  print HOME_PAGE_BEGIN
-  print HOME_PAGE_TABLE_BEGIN % {"title": "Syntax"}
-  for syntax, html in SYNTAX:
-    print HOME_PAGE_SYNTAX_ROW % {
-        "syntax": cgi.escape(syntax).replace(" ", "&nbsp;"),
-        "text": html,
-      }
-  print HOME_PAGE_TABLE_END
-  print HOME_PAGE_TABLE_BEGIN % {"title": "Examples"}
+if 'q' not in fs:  # No query, emit the home page
+  print(HOME_PAGE_BEGIN)
+  print(HOME_PAGE_TABLE_BEGIN % {"title": "Syntax"})
+  for syntax, raw in SYNTAX:
+    print(HOME_PAGE_SYNTAX_ROW % {
+        "syntax": html.escape(syntax).replace(" ", "&nbsp;"),
+        "text": raw,
+      })
+  print(HOME_PAGE_TABLE_END)
+  print(HOME_PAGE_TABLE_BEGIN % {"title": "Examples"})
   for query, text in EXAMPLES:
-    print HOME_PAGE_EXAMPLE_ROW % {
-        "link": urllib.quote(query),
-        "query": cgi.escape(query).replace(" ", "&nbsp;"),
-        "text": cgi.escape(text),
-      }
-  print HOME_PAGE_TABLE_END
-  print HOME_PAGE_END
+    print(HOME_PAGE_EXAMPLE_ROW % {
+        "link": urllib.parse.quote(query),
+        "query": html.escape(query).replace(" ", "&nbsp;"),
+        "text": html.escape(text),
+      })
+  print(HOME_PAGE_TABLE_END)
+  print(HOME_PAGE_END)
   sys.exit(0)
 
 query = fs.getvalue("q", "").strip()
@@ -176,50 +177,50 @@ proc = subprocess.Popen([binary, index, query],
     preexec_fn=lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL),
     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-print RESULT_PAGE_BEGIN % {"query": cgi.escape(query, quote=True)}
+print(RESULT_PAGE_BEGIN % {"query": html.escape(query)})
 
 rn = 0
 while 1:
-  line = proc.stdout.readline()
+  line = proc.stdout.readline().decode()
   if not line:
-    error = proc.stderr.read().strip()
+    error = proc.stderr.read().decode().strip()
     if error:
-      print RESULT_ERROR % {"text": cgi.escape(error).replace("\n", "<br>")}
+      print(RESULT_ERROR % {"text": html.escape(error).replace("\n", "<br>")})
     elif proc.poll():
       if proc.returncode == -signal.SIGXCPU:
-        print RESULT_ERROR % {"text": "find-expr killed: Too much CPU time"}
+        print(RESULT_ERROR % {"text": "find-expr killed: Too much CPU time"})
       elif proc.returncode < 0:
-        print RESULT_ERROR % {"text": "find-expr killed: Signal %d" % -proc.returncode}
+        print(RESULT_ERROR % {"text": "find-expr killed: Signal %d" % -proc.returncode})
       else:
-        print RESULT_ERROR % {"text": "find-expr died: Return code %d" % proc.returncode}
+        print(RESULT_ERROR % {"text": "find-expr died: Return code %d" % proc.returncode})
     elif rn > 0:
-      print RESULT_DONE
+      print(RESULT_DONE)
     else:
-      print RESULT_NONE
+      print(RESULT_NONE)
     break
 
   score, text = line.strip().split(" ", 1)
   if score == "#" and int(text) >= max_computation:
-    print RESULT_TIMEOUT % {
-        "query": urllib.quote(query),
+    print(RESULT_TIMEOUT % {
+        "query": urllib.parse.quote(query),
         "even": "even" if max_computation > MAX_COMPUTATION else "",
         "next_max": 2 * max_computation,
-    }
+    })
     break
 
   if score == "#":
     continue
 
   if start > 0 and rn == start:
-    print RESULT_PAGE % {"page": rn // num + 1}
+    print(RESULT_PAGE % {"page": rn // num + 1})
 
   if rn >= start + num:
-    print RESULT_NEXT % {
-        "query": urllib.quote(query),
+    print(RESULT_NEXT % {
+        "query": urllib.parse.quote(query),
         "start": start + num,
         "num": num,
         "page": start // num + 2,
-      }
+      })
     break
 
   if rn >= start:
@@ -230,8 +231,8 @@ while 1:
       size = 1.5 + math.log(score) / 50.0
     else:
       size = 0
-    print RESULT_ITEM % {"size": max(size, 0.4), "text": cgi.escape(text)}
+    print(RESULT_ITEM % {"size": max(size, 0.4), "text": html.escape(text)})
 
   rn += 1
 
-print RESULT_PAGE_END
+print(RESULT_PAGE_END)

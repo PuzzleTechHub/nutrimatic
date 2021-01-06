@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 import argparse
-import cPickle
 import hashlib
 import logging
 import os
 import os.path
+import pickle
 import pipes
 import re
 import subprocess
@@ -78,7 +78,7 @@ def modtime(fname):
 
 
 def files_up_to_date(files, test):
-    for fname, value in files.iteritems():
+    for fname, value in files.items():
         if test(fname) != value:
             logging.debug("Not up to date: %s", shlex_quote(fname))
             return False
@@ -133,14 +133,14 @@ def generate_deps(cmd, test):
 def read_deps(fname):
     try:
         with open(fname, 'rb') as fh:
-            return cPickle.load(fh)
+            return pickle.load(fh)
     except:
         return {}
 
 
 def write_deps(fname, deps):
     with open(fname, 'wb') as fh:
-        cPickle.dump(deps, fh)
+        pickle.dump(deps, fh)
 
 
 def memoize_with_deps(depsname, deps, cmd):

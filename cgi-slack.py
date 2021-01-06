@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Slack interface (via Web request) to Nutrimatic find-expr.
 #
@@ -9,6 +9,7 @@
 import cgi
 import cgitb; cgitb.enable()
 import daemon
+import html
 import json
 import math
 import os
@@ -40,7 +41,7 @@ def Finalize(json_data):
 
 def OutputImmediate(json_data):
   Finalize(json_data)
-  print 'Content-type: application/json\n'
+  print('Content-type: application/json\n')
   json.dump(json_data, sys.stdout)
   print
 
@@ -74,11 +75,11 @@ if not query:
 command_name = fs.getvalue('command', '')
 response_type = 'ephemeral' if command_name.endswith('q') else 'in_channel'
 
-if fs.has_key('response_url'):
+if 'response_url' in fs:
   if response_type == 'in_channel':
     OutputImmediate({'response_type': response_type})
   else:
-    print 'Content-type: text/plain'
+    print('Content-type: text/plain')
     print
 
   sys.stdout.flush()
@@ -101,7 +102,7 @@ proc = subprocess.Popen([binary, index, query],
 
 lines = []
 
-nutrimatic_url = 'https://nutrimatic.org/?q=%s' % urllib.quote_plus(query)
+nutrimatic_url = 'https://nutrimatic.org/?q=%s' % urllib.parse.quote_plus(query)
 
 attachment = {
   'title': 'Query: %s' % query,
@@ -117,12 +118,12 @@ output = {
 
 rn = 0
 while 1:
-  line = proc.stdout.readline()
+  line = proc.stdout.readline().decode()
   if not line:
-    error = proc.stderr.read().strip()
+    error = proc.stderr.read().decode().strip()
     if error:
       attachment['color'] = 'warning' if rn else 'danger'
-      lines.append('_*%s*_' % cgi.escape(error))
+      lines.append('_*%s*_' % html.escape(error))
     elif proc.poll():
       if proc.returncode == -signal.SIGXCPU:
         message = '_*Search killed:* Too much CPU time._'
@@ -131,7 +132,7 @@ while 1:
       else:
         message = '_*Search died:* Return code %d._' % proc.returncode
       attachment['color'] = 'warning' if rn else 'danger'
-      lines.append(cgi.escape(message))
+      lines.append(html.escape(message))
     elif rn == 0:
       attachment['color'] = 'warning'
       lines.append('_*No results found, sorry.*_')
@@ -165,7 +166,7 @@ while 1:
 
   score = float(score)
   attachment['color'] = 'good'
-  lines.append(cgi.escape(('*%s*' if score >= 2.0 else '%s') % text))
+  lines.append(html.escape(('*%s*' if score >= 2.0 else '%s') % text))
   rn += 1
 
 OutputDelayed(output)
