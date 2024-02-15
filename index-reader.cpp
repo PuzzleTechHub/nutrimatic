@@ -20,7 +20,7 @@ IndexReader::IndexReader(FILE* fp) {
   }
 
   // scan the top level nodes to compute the total
-  vector<Choice> top;
+  std::vector<Choice> top;
   children(root(), 0, CHAR_MIN, CHAR_MAX, &top);
   while (top.size() == 1 && top[0].count == 0) {
     off_t node = top[0].next;
@@ -38,7 +38,7 @@ IndexReader::~IndexReader() {
 
 int IndexReader::children(off_t n, int64_t count,
                           char min, char max,
-                          vector<Choice>* out) const {
+                          std::vector<Choice>* out) const {
   if (n == (off_t) -1) return count;
 
   Choice choice;

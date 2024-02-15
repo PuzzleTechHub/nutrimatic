@@ -22,7 +22,7 @@ struct AnagramPart {
   int group;
 };
 
-static void CollapseIdentical(vector<AnagramPart>* parts) {
+static void CollapseIdentical(std::vector<AnagramPart>* parts) {
   for (size_t i = 0; i < parts->size(); ++i) {
     size_t jin = i + 1, jout = i + 1;
     while (jin < parts->size()) {
@@ -37,8 +37,9 @@ static void CollapseIdentical(vector<AnagramPart>* parts) {
   }
 }
 
-static void MakeExpr(vector<AnagramPart> const& parts, StdMutableFst* out) {
-  vector<StdVectorFst> to_intersect;
+static void MakeExpr(std::vector<AnagramPart> const& parts,
+                     StdMutableFst* out) {
+  std::vector<StdVectorFst> to_intersect;
 
   StdVectorFst any;
   int total = 0;
@@ -75,7 +76,7 @@ static void MakeExpr(vector<AnagramPart> const& parts, StdMutableFst* out) {
 const char *ParseAnagram(const char *p, StdMutableFst* out, bool quoted) {
   if (p == NULL) return NULL;
 
-  vector<AnagramPart> parts;
+  std::vector<AnagramPart> parts;
   while (*p != '>') {
     StdVectorFst expr;
     p = ParsePiece(p, &expr, quoted);

@@ -60,7 +60,7 @@ bool SearchDriver::step() {
     for (int i = next.crumb; i >= 0; i = crumbs[i].parent)
       ++len;
 
-    string buffer(len--, next.choice.ch);
+    std::string buffer(len--, next.choice.ch);
     for (int i = next.crumb; i >= 0 && len > 0; i = crumbs[i].parent)
       buffer[--len] = crumbs[i].ch;
     assert(len == 0);

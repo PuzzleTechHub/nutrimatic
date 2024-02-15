@@ -11,7 +11,7 @@ using namespace std;
 
 #define DEBUG 0
 
-static regex_t make_regex(const string &str) {
+static regex_t make_regex(const std::string &str) {
   regex_t r;
 
 #if DEBUG
@@ -28,8 +28,9 @@ static regex_t make_regex(const string &str) {
   return r;
 }
 
-static bool replace_regex(string* in, regex_t const& rx, const char *repl) {
-  string out;
+static bool replace_regex(std::string* in, regex_t const& rx,
+                          const char *repl) {
+  std::string out;
   int e, pos = 0;
   regmatch_t sub[rx.re_nsub + 1];
 
@@ -83,13 +84,13 @@ static bool replace_regex(string* in, regex_t const& rx, const char *repl) {
   }
 }
 
-static void do_page(string& title, string& text) {
+static void do_page(std::string& title, std::string& text) {
   if (text.empty() || title.empty()) return;
 
   static const regex_t redirect = make_regex("^#REDIRECT");
   if (replace_regex(&text, redirect, "")) return;
 
-  static const string NB = "(?:[][]?[^][])*";
+  static const std::string NB = "(?:[][]?[^][])*";
 
   static const regex_t remove = make_regex(
       "<!--.*-->|"
@@ -139,7 +140,7 @@ int main(int argc, char* argv[]) {
   if (reader == NULL) return 1;
 
   int ret;
-  string title, text, *current = NULL;
+  std::string title, text, *current = NULL;
   while ((ret = xmlTextReaderRead(reader)) == 1) {
     char const* name = (char const*) xmlTextReaderConstName(reader);
     if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_TEXT) {

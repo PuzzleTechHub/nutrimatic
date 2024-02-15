@@ -79,8 +79,8 @@ struct FrequencyCutoffWriter {
   IndexWriter* const output;
   const int cutoff;
   size_t output_same;
-  string saved;
-  vector<pair<size_t, int64_t> > words;
+  std::string saved;
+  std::vector<pair<size_t, int64_t> > words;
 };
 
 int main(int argc, char *argv[]) {
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
     return 2;
   }
 
-  priority_queue<IndexWalker*, vector<IndexWalker*>, ReaderCompare> queue;
+  priority_queue<IndexWalker*, std::vector<IndexWalker*>, ReaderCompare> queue;
   for (int i = 2; i < argc - 1; ++i) {
     FILE *fp = fopen(argv[i], "r");
     if (fp == NULL) {

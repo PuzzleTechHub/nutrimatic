@@ -16,15 +16,15 @@ static const size_t MAX_LINE_LENGTH = 65536;
 static const size_t HISTORY_WINDOW_SIZE = 40;
 static const size_t TITLE_MULTIPLIER = 10;
 
-static void do_buffer(char *text, int *len, vector<string>* out) {
-  out->push_back(string(text, *len));
+static void do_buffer(char *text, int *len, std::vector<string>* out) {
+  out->push_back(std::string(text, *len));
   char* space = (char*) memchr(text, ' ', *len);
   if (space == NULL) space = text + *len - 1;
   *len -= space + 1 - text;
   memmove(text, space + 1, *len);
 }
 
-static void do_line(char const* line, vector<string>* out) {
+static void do_line(char const* line, std::vector<string>* out) {
   char buf[HISTORY_WINDOW_SIZE];
   int buflen = 0;
 
@@ -41,7 +41,8 @@ static void do_line(char const* line, vector<string>* out) {
   while (buflen > 0) do_buffer(buf, &buflen, out);
 }
 
-static void write_index(char const* prefix, int num, vector<string>* chains) {
+static void write_index(char const* prefix, int num,
+                        std::vector<string>* chains) {
   char filename[strlen(prefix) + 32];
   sprintf(filename, "%s.%05d.index", prefix, num);
   FILE *fp = fopen(filename, "w");
@@ -74,7 +75,7 @@ int main(int argc, char* argv[]) {
 
   int filecount = 0;
   char buf[MAX_LINE_LENGTH];
-  vector<string> chains;
+  std::vector<string> chains;
   bool next_line_is_title = false;
   while (fgets(buf, sizeof(buf), stdin)) {
     // Handle both output from remove-markup (with BEGIN ARTICLE: and

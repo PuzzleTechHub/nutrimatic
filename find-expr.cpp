@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   chars->AddSymbol("epsilon", 0);
   chars->AddSymbol("space", ' ');
   for (int i = 33; i <= 127; ++i)
-    chars->AddSymbol(string(1, i), i);
+    chars->AddSymbol(std::string(1, i), i);
 
   StdVectorFst parsed;
   parsed.SetInputSymbols(chars);

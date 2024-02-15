@@ -31,7 +31,7 @@ const char *ParseExpr(const char *p, StdMutableFst* fst, bool quoted) {
 }
 
 const char *ParseBranch(const char *p, StdMutableFst* fst, bool quoted) {
-  vector<StdVectorFst> to_intersect;
+  std::vector<StdVectorFst> to_intersect;
   StdVectorFst first;
   p = ParseFactor(p, &first, quoted);
   to_intersect.push_back(first);
@@ -126,7 +126,7 @@ const char *ParseAtom(const char *p, StdMutableFst* fst, bool quoted) {
     return p + 1;
   }
 
-  vector<char> chars;
+  std::vector<char> chars;
   bool negate = false;
 
   if (*p == '[') {
@@ -161,7 +161,7 @@ const char *ParseAtom(const char *p, StdMutableFst* fst, bool quoted) {
   fst->SetStart(start);
   fst->SetFinal(final, Weight::One());
   if (negate) {
-    vector<char> all;
+    std::vector<char> all;
     ParseCharClass(".", &all);
     for (int i = 0; i < all.size(); ++i)
       if (find(chars.begin(), chars.end(), all[i]) == chars.end())
@@ -179,7 +179,7 @@ const char *ParseAtom(const char *p, StdMutableFst* fst, bool quoted) {
   return p;
 }
 
-const char *ParseCharClass(const char *p, vector<char>* out) {
+const char *ParseCharClass(const char *p, std::vector<char>* out) {
   if (p == NULL) return NULL;
   if ((*p >= 'a' && *p <= 'z') || (*p >= '0' && *p <= '9') || *p == ' ') {
     out->push_back(*p);

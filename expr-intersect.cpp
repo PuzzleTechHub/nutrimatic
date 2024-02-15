@@ -14,14 +14,14 @@
 using namespace fst;
 
 void IntersectExprs(
-    vector<StdVectorFst> const& in,
+    std::vector<StdVectorFst> const& in,
     StdMutableFst* out) {
   if (in.size() == 1) {
     *out = in[0];
     return;
   }
 
-  vector<StdVectorFst> input = in, output;
+  std::vector<StdVectorFst> input = in, output;
   while (input.size() > 1) {
     assert(output.empty());
     if (input.size() % 2 > 0) {

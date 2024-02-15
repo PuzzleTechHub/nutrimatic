@@ -23,10 +23,10 @@ static void TestIndex(const char *expr, const char *yes, const char *no) {
   }
 
   IndexWriter writer(fp);
-  vector<string> str;
+  std::vector<std::string> str;
   if (yes != NULL) str.push_back(yes);
   if (no != NULL) str.push_back(no);
-  sort(str.begin(), str.end());
+  std::sort(str.begin(), str.end());
   for (size_t i = 0; i < str.size(); ++i) writer.next(str[i].c_str(), 0, 1);
   writer.next(NULL, 0, 0);
   fclose(fp);

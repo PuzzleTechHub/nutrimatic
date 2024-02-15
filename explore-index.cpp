@@ -20,10 +20,10 @@ bool by_count(IndexReader::Choice const& a, IndexReader::Choice const& b) {
 }
 
 static void walk(IndexReader const& reader, off_t node, int64_t count,
-                 const char *path, int depth, string *sofar) {
+                 const char *path, int depth, std::string *sofar) {
   if (depth == 0) return;
 
-  vector<IndexReader::Choice> children;
+  std::vector<IndexReader::Choice> children;
   if (*path != '\0') {
     reader.children(node, count, *path, *path, &children);
     ++path;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  string sofar = "";
+  std::string sofar = "";
   walk(reader, reader.root(), reader.count(), argv[2], depth, &sofar);
   return 0;
 }
