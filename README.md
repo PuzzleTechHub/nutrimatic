@@ -7,12 +7,9 @@
 1. You'll need a working C++ build system
    (debian/ubuntu: `sudo apt install build-essential`)
 
-2. Install [mise-en-place](https://mise.jdx.dev/) as a bootstrap tool.
-   ```
-   curl https://mise.run | sh
-   ```
-   (See [the Mise docs](https://mise.jdx.dev/getting-started.html)
-   for alternatives if you don't like `curl | sh` installs.)
+2. Install [mise-en-place](https://mise.jdx.dev/) as a tool installer:
+   `curl https://mise.run | sh` (or see
+   [other install methods](https://mise.jdx.dev/getting-started.html))
 
 3. Run `./dev_setup.py` which will install various dependencies locally
 
@@ -34,8 +31,8 @@ or you don't like mise...)
 3. You probably want to set up a
    [Python venv](https://docs.python.org/3/library/venv.html)
 
-4. Install [Conan](https://docs.conan.io/2/) and [CMake](https://cmake.org/):
-   `pip install conan==2.1.0 cmake==3.28.3`
+4. Install [Conan](https://docs.conan.io/2/), [CMake](https://cmake.org/), etc:
+   `pip install -r dev_requirements.txt`
 
 5. Configure Conan to build on your machine (if you haven't already)
    ```

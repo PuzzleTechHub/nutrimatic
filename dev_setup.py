@@ -46,8 +46,7 @@ build_dir.mkdir(exist_ok=True)
 (build_dir / ".gitignore").open("w").write("/*\n")
 
 print(f"\n➡️ Conan (C++ package manager) setup")
-# Some recipes (eg. zlib) don't list cmake as a dep, so just install it first
-run_shell("pip", "install", "conan==2.1.0", "cmake==3.28.3")
+run_shell("pip", "install", "-r", "dev_requirements.txt")
 profile_path = conan_dir / "profiles" / "default"
 run_shell("conan", "profile", "detect", "--name=detected", "--force")
 print(f"⚙️ Writing: {profile_path}")
