@@ -1,14 +1,54 @@
 # The source for [Nutrimatic](http://nutrimatic.org/)
 
-### To build the source
+### Build from source (the easy scripted way)
 
-1. Install [mise-en-place](https://mise.jdx.dev/) as a bootstrap tool
+(If this doesn't work for you, see the manual steps below.)
 
-2. You'll need a working C++ build system (debian/ubuntu: `sudo apt install build-essential`)
+1. You'll need a working C++ build system
+   (debian/ubuntu: `sudo apt install build-essential`)
+
+2. Install [mise-en-place](https://mise.jdx.dev/) as a bootstrap tool.
+   ```
+   curl https://mise.run | sh
+   ```
+   (See [the Mise docs](https://mise.jdx.dev/getting-started.html)
+   for alternatives if you don't like `curl | sh` installs.)
 
 3. Run `./dev_setup.py` which will install various dependencies locally
 
-4. After that, run `conan build .` which will leave binaries in `build/`
+4. Then run `conan build .` which will leave binaries in `build/`
+
+### Build from source (the hard manual way)
+
+(The scripted path above is easier! But maybe that's too magical,
+or you don't like mise...)
+
+1. As above, you'll need C++ build tools
+   (debian/ubuntu: `sudo apt install build-essential`)
+
+2. Use **Python 3.10** (avoids
+   [this wikiextractor bug](https://github.com/attardi/wikiextractor/issues/305)
+   exposed by
+   [this change in Python 3.11](https://github.com/python/cpython/issues/91222))
+
+3. You probably want to set up a
+   [Python venv](https://docs.python.org/3/library/venv.html)
+
+4. Install [Conan](https://docs.conan.io/2/) and [CMake](https://cmake.org/):
+   `pip install conan==2.1.0 cmake==3.28.3`
+
+5. Configure Conan to build on your machine (if you haven't already)
+   ```
+   conan profile detect
+   conan profile path default  # note the path this outputs
+   ```
+
+   Edit the file listed by `conan profile path default` to set
+   `compiler.cppstd=17` (or `gnu17`)
+
+6. Install C++ dependencies: `conan install . --build=missing`
+
+7. Then run `conan build .` which will leave binaries in `build/`
 
 ### To build an index
 
@@ -28,13 +68,11 @@ To actually use Nutrimatic, you will need to build an index from Wikipedia.
    (this generates ~12GB, and takes hours!):
 
      ```
-     # TODO: There are probably better tools these days!
      pip install wikiextractor  # installs into the local virtualenv
      wikiextractor enwiki-latest-pages-articles.xml.bz2
      ```
 
-   (You may need [this fix](https://github.com/attardi/wikiextractor/pull/182).
-   There are probably better extractors these days!)
+   (There are probably better extractors these days!)
 
    This will write many files named `text/??/wiki_??`.
 

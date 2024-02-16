@@ -2,7 +2,7 @@
 CONAN_HOME = "{{config_root}}/build/conan"
 
 [tools]
-python = {version="3.11", virtualenv="build/python_venv"}
+python = {version="3.10", virtualenv="build/python_venv"}
 
 [settings]
 experimental = true

@@ -1,5 +1,10 @@
-*.index
+/build/
+
+# Python
 *.pyc
+__pycache__
+
+# Nutrimatic data
+*.index
 *.xml
 *.xml.bz2
-__pycache__

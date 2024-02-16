@@ -30,11 +30,11 @@ build_dir = top_dir / "build"
 conan_dir = build_dir / "conan"
 os.chdir(top_dir)
 
+print(f"➡️ Mise (tool manager) setup")
 if not shutil.which("mise"):
-    print("🚨 Please install 'mise' (https://mise.jdx.dev)")
+    print("🚨 Please install 'mise' (https://mise.jdx.dev/)")
     exit(1)
 
-print(f"➡️ Mise (tool manager) setup")
 run_shell("mise", "install")
 
 print(f"\n➡️ Build dir ({build_dir})")
@@ -47,7 +47,7 @@ build_dir.mkdir(exist_ok=True)
 
 print(f"\n➡️ Conan (C++ package manager) setup")
 # Some recipes (eg. zlib) don't list cmake as a dep, so just install it first
-run_shell("pip", "install", "conan~=2.0", "cmake~=3.28")
+run_shell("pip", "install", "conan==2.1.0", "cmake==3.28.3")
 profile_path = conan_dir / "profiles" / "default"
 run_shell("conan", "profile", "detect", "--name=detected", "--force")
 print(f"⚙️ Writing: {profile_path}")
