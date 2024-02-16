@@ -6,7 +6,7 @@
 
 2. You'll need a working C++ build system (debian/ubuntu: `sudo apt install build-essential`)
 
-3. Run `./setup_dev.py` which will install various dependencies locally
+3. Run `./dev_setup.py` which will install various dependencies locally
 
 4. After that, run `conan build .` which will leave binaries in `build/`
 
