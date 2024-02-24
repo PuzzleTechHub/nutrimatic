@@ -15,7 +15,7 @@ class NutrimaticConan(conan.ConanFile):
 
     requires = ["openfst/1.8.2", "libxml2/2.12.4", "tre/cci.20230717"]
     tool_requires = ["meson/1.3.1", "ninja/1.11.1"]
-    generators = ["MesonToolchain", "PkgConfigDeps"]
+    generators = ["MesonToolchain", "PkgConfigDeps", "VirtualBuildEnv"]
 
     exports_sources = "source/*"
     no_copy_source = True
@@ -26,7 +26,7 @@ class NutrimaticConan(conan.ConanFile):
     def layout(self):
         self.folders.source = "source"
         self.folders.build = "build"
-        self.folders.generators = "build/meson"
+        self.folders.generators = "build/dep-info"
 
     def build(self):
         meson = conan.tools.meson.Meson(self)
