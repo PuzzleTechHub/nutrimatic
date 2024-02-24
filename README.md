@@ -109,17 +109,38 @@ To actually use Nutrimatic, you will need to build an index from Wikipedia.
 
 ### Serving the web interface
 
-If you want to set up the web interface, write a shell wrapper that runs
-cgi-search.py with arguments pointing it at your binaries and data files, e.g.:
+If you want to run the [nutrimatic.org](https://nutrimatic.org/) style
+interface, point a web server at the `web_static/` directory, and for
+root requests have it launch `cgi_scripts/cgi-search.py` with
+`$NUTRIMATIC_FIND_EXPR` set to the `find-expr` binary and `$NUTRIMATIC_INDEX`
+set to the index you built.
+
+(You might want to use `install_to_dir.py` which will copy executables,
+CGI scripts, and static content to the directory of your choice.)
+
+For example, you could adapt this [nginx](https://www.nginx.com/) config:
 
 ```
-#!/bin/sh
-export NUTRIMATIC_FIND_EXPR=/path/to/nutrimatic/build/find-expr
-export NUTRIMATIC_INDEX=/path/to/nutrimatic/data/wiki-merged.index
-exec /path/to/nutrimatic/cgi-search.py
-```
+location /my-nutrimatic/ {
+  # Serve static files (change /home/me/nutrimatic_install to your install dir)
+  alias /home/me/nutrimatic_install/web_static/;
 
-Then arrange for your web server to invoke that shell wrapper as a CGI script.
+  # For root requests, run the CGI script
+  location = /my-nutrimatic/ {
+    fastcgi_pass unix:/var/run/fcgiwrap.socket;
+    fastcgi_buffering off;  # send results as soon as we find them
+    include /etc/nginx/fastcgi_params;
+    gzip off;  # gzip compression also causes buffering
+
+    # (change /home/me/nutrimatic_install to your install dir)
+    fastcgi_param SCRIPT_FILENAME /home/me/nutrimatic_install/cgi_scripts/cgi-search.py;
+    fastcgi_param NUTRIMATIC_FIND_EXPR /home/me/nutrimatic_install/bin/find-expr;
+
+    # (change to wherever you put your index file)
+    fastcgi_param NUTRIMATIC_INDEX /home/me/nutrimatic_install/wiki-merged.index;
+  }
+}
+```
 
 Have fun,
 

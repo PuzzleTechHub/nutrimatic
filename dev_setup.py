@@ -20,7 +20,7 @@ def run_shell(*av, **kw):
         av = ["mise", "exec", "--", *av]
     subprocess.run(av, **{"check": True, **kw})
 
-parser = argparse.ArgumentParser(description="Pivid dev environment setup")
+parser = argparse.ArgumentParser(description="Nutrimatic dev environment setup")
 parser.add_argument("--clean", action="store_true", help="Wipe build dir first")
 parser.add_argument("--debug", action="store_true", help="Debug build for deps")
 args = parser.parse_args()
@@ -41,11 +41,12 @@ print(f"\n➡️ Build dir ({build_dir})")
 if args.clean and build_dir.is_dir():
     print("🗑️ WIPING build dir (per --clean)")
     shutil.rmtree(build_dir)
-    build_dir.mkdir(exist_ok=True)
+    build_dir.mkdir()
 elif build_dir.is_dir():
     print("🏠 Using existing build dir")
 else:
     print("🏗️ Creating build dir")
+    build_dir.mkdir()
 
 (build_dir / ".gitignore").open("w").write("/*\n")
 

@@ -4,7 +4,6 @@
 #
 # Expects to be run $NUTRIMATIC_FIND_EXPR and $NUTRIMATIC_INDEX set to the
 # pathnames of the find-expr binary and the merged .index file, respectively.
-# Normally this is done with a shell script wrapper which the web server runs.
 
 import cgi
 import cgitb; cgitb.enable()

@@ -2,8 +2,11 @@
 
 import conan
 import conan.tools.meson
+import conan.tools.files
 
 class NutrimaticConan(conan.ConanFile):
+    name = "nutrimatic"
+    version = "0.1"
     package_type = "application"
 
     settings = "os", "compiler", "build_type", "arch"
@@ -14,14 +17,25 @@ class NutrimaticConan(conan.ConanFile):
     tool_requires = ["meson/1.3.1", "ninja/1.11.1"]
     generators = ["MesonToolchain", "PkgConfigDeps"]
 
+    exports_sources = "source/*"
+    no_copy_source = True
+
+    def validate(self):
+        conan.tools.build.check_min_cppstd(self, 17)
+
+    def layout(self):
+        self.folders.source = "source"
+        self.folders.build = "build"
+        self.folders.generators = "build/meson"
+
     def build(self):
         meson = conan.tools.meson.Meson(self)
         meson.configure(reconfigure=True)
         meson.build()
 
-    def layout(self):
-        self.folders.build = "build"
-        self.folders.generators = "build/meson"
-
-    def validate(self):
-        conan.tools.build.check_min_cppstd(self, 17)
+    def package(self):
+        meson = conan.tools.meson.Meson(self)
+        meson.install()
+        source_root, output_dir = self.recipe_folder, self.package_folder
+        conan.tools.files.copy(self, "cgi_scripts/*", source_root, output_dir)
+        conan.tools.files.copy(self, "web_static/*", source_root, output_dir)

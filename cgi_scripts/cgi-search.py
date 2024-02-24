@@ -4,7 +4,6 @@
 #
 # Expects to be run with $NUTRIMATIC_FIND_EXPR and $NUTRIMATIC_INDEX set to the
 # pathnames of the find-expr binary and the merged .index file, respectively.
-# Normally this is done with a shell script wrapper which the web server runs.
 
 import cgi
 import cgitb; cgitb.enable()
@@ -64,11 +63,11 @@ HOME_PAGE_TABLE_END = """
 HOME_PAGE_END = """
 <h3>More</h3>
 <ul>
-<li><a href="/usage.html">Usage guide</a>: usage tips,
+<li><a href="usage.html">Usage guide</a>: usage tips,
 worked examples, why it's slow.
-<li><a href="https://github.com/PuzzleTechHub/nutrimatic">Source code</a>:
+<li><a href="https://github.com/egnor/nutrimatic">Source code</a>:
 badly documented, but see the <a
-href="https://github.com/PuzzleTechHub/nutrimatic/blob/master/README">README</a>.
+href="https://github.com/egnor/nutrimatic/blob/master/README">README</a>.
 </ul>
 
 </body></html>

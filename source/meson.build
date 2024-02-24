@@ -1,6 +1,6 @@
 project(
   'nutrimatic', ['cpp'],
-  version: '0.0',
+  version: '0.1',
   default_options: [
     'cpp_std=c++17',
     'warning_level=3',
@@ -48,17 +48,17 @@ expr_lib = library(
 )
 
 foreach p : ['remove-markup']
-  executable(p, p + '.cpp', dependencies: [tre_dep, xml2_dep])
+  executable(p, p + '.cpp', dependencies: [tre_dep, xml2_dep], install: true)
 endforeach
 
 foreach p : ['make-index', 'merge-indexes', 'dump-index', 'explore-index']
-  executable(p, p + '.cpp', link_with: index_lib)
+  executable(p, p + '.cpp', link_with: index_lib, install: true)
 endforeach
 
 foreach p : ['find-anagrams', 'find-phone-words']
-  executable(p, p + '.cpp', link_with: search_lib)
+  executable(p, p + '.cpp', link_with: search_lib, install: true)
 endforeach
 
 foreach p : ['find-expr', 'test-expr']
-  executable(p, p + '.cpp', link_with: expr_lib, dependencies: fst_dep)
+  executable(p, p + '.cpp', link_with: expr_lib, dependencies: fst_dep, install: true)
 endforeach
