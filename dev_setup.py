@@ -39,10 +39,14 @@ run_shell("mise", "install")
 
 print(f"\n➡️ Build dir ({build_dir})")
 if args.clean and build_dir.is_dir():
-    print("🗑️ ERASING build dir (per --clean)")
+    print("🗑️ WIPING build dir (per --clean)")
     shutil.rmtree(build_dir)
+    build_dir.mkdir(exist_ok=True)
+elif build_dir.is_dir():
+    print("🏠 Using existing build dir")
+else:
+    print("🏗️ Creating build dir")
 
-build_dir.mkdir(exist_ok=True)
 (build_dir / ".gitignore").open("w").write("/*\n")
 
 print(f"\n➡️ Conan (C++ package manager) setup")
