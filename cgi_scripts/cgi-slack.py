@@ -18,7 +18,8 @@ import subprocess
 import sys
 import time
 import urllib
-import urllib2
+from urllib.request import urlopen
+import requests
 
 # When find-expr reports searching this many nodes, give up and
 # print the "computation limit exceeded" message
@@ -49,9 +50,9 @@ def OutputDelayed(json_data):
   Finalize(json_data)
   response_url = fs.getvalue('response_url', '')
   if response_url:
-    req = urllib2.Request(response_url)
+    req = requests.Request(response_url)
     req.add_header('Content-Type', 'application/json')
-    urllib2.urlopen(req, json.dumps(json_data))
+    urlopen(req, json.dumps(json_data))
   else:
     print
     json.dump(json_data, sys.stdout)  # For debugging.
