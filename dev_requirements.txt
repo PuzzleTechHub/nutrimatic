@@ -1,3 +1,2 @@
 conan==2.1.0
 cmake==3.28.3
-daemon==1.2
