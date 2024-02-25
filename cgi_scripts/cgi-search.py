@@ -43,7 +43,7 @@ mined from Wikipedia.  Text is normalized to lowercase letters,
 numbers and spaces.  More common results are returned first.</p>
 """
 
-HOME_PAGE_TABLE_BEGIN = """
+HOME_PAGE_LIST_BEGIN = """
 <h3>%(title)s</h3>
 <ul>
 """
@@ -53,10 +53,14 @@ HOME_PAGE_SYNTAX_ROW = """
 """
 
 HOME_PAGE_EXAMPLE_ROW = """
-<li><a style="text-decoration: none" href="?q=%(link)s">%(query)s</a> - %(text)s
+<li><a style="text-decoration: none" href="?q=%(param)s">%(query)s</a> - %(text)s
 """
 
-HOME_PAGE_TABLE_END = """
+HOME_PAGE_EDITION_ROW = """
+<li><a href="%(url)s">%(link)s</a> - %(text)s
+"""
+
+HOME_PAGE_LIST_END = """
 </ul>
 """
 
@@ -130,6 +134,11 @@ EXAMPLES = [
   ("\"_ ___ ___ _*burger\"", "lol"),
 ]
 
+EDITIONS = [
+  ("https://nutrimatic.org/2016/", "'classic' original"),
+  ("https://nutrimatic.org/2024/", "current edition"),
+]
+
 binary = os.environ["NUTRIMATIC_FIND_EXPR"]
 index = os.environ["NUTRIMATIC_INDEX"]
 
@@ -139,21 +148,32 @@ print()
 fs = cgi.FieldStorage()
 if 'q' not in fs:  # No query, emit the home page
   print(HOME_PAGE_BEGIN)
-  print(HOME_PAGE_TABLE_BEGIN % {"title": "Syntax"})
+  print(HOME_PAGE_LIST_BEGIN % {"title": "Syntax"})
   for syntax, raw in SYNTAX:
     print(HOME_PAGE_SYNTAX_ROW % {
         "syntax": html.escape(syntax).replace(" ", "&nbsp;"),
         "text": raw,
       })
-  print(HOME_PAGE_TABLE_END)
-  print(HOME_PAGE_TABLE_BEGIN % {"title": "Examples"})
+  print(HOME_PAGE_LIST_END)
+
+  print(HOME_PAGE_LIST_BEGIN % {"title": "Examples"})
   for query, text in EXAMPLES:
     print(HOME_PAGE_EXAMPLE_ROW % {
-        "link": urllib.parse.quote(query),
+        "param": urllib.parse.quote(query),
         "query": html.escape(query).replace(" ", "&nbsp;"),
         "text": html.escape(text),
       })
-  print(HOME_PAGE_TABLE_END)
+  print(HOME_PAGE_LIST_END)
+
+  print(HOME_PAGE_LIST_BEGIN % {"title": "Editions"})
+  for url, text in EDITIONS:
+    parts = urllib.parse.urlparse(url)._replace(scheme="")
+    print(HOME_PAGE_EDITION_ROW % {
+        "url": url,
+        "link": html.escape(parts.geturl().strip("/")),
+        "text": html.escape(text),
+      })
+  print(HOME_PAGE_LIST_END)
   print(HOME_PAGE_END)
   sys.exit(0)
 
