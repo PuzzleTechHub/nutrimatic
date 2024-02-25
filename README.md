@@ -152,5 +152,6 @@ compatible index building and searching logic:
   [Nutrimatic code](https://github.com/PuzzleTechHub/nutrimatic/tree/0026122178539734d49d5654499879d8fc1709a7)
   with [enwiki-20161101](https://archive.org/details/enwiki-20161101)
   ([discussion](https://github.com/PuzzleTechHub/nutrimatic/issues/14))
-* [nutrimatic.org/2024] (Feb 2024 - current): [Nutrimatic code]
+* [nutrimatic.org/2024] (Feb 2024 - current):
+  [Nutrimatic code](https://github.com/PuzzleTechHub/nutrimatic/)
   with [enwiki-20231201](https://dumps.wikimedia.org/enwiki/20231201/)
