@@ -149,9 +149,9 @@ to build an index from the corresponding Wikipedia data dump using
 compatible index building and searching logic:
 
 * [nutrimatic.org/2016] (Dec 2016 - Feb 2024):
-  [Nutrimatic code](https://github.com/PuzzleTechHub/nutrimatic/tree/0026122178539734d49d5654499879d8fc1709a7)
+  [historical code](https://github.com/PuzzleTechHub/nutrimatic/tree/0026122178539734d49d5654499879d8fc1709a7)
   with [enwiki-20161101](https://archive.org/details/enwiki-20161101)
   ([discussion](https://github.com/PuzzleTechHub/nutrimatic/issues/14))
 * [nutrimatic.org/2024] (Feb 2024 - current):
-  [Nutrimatic code](https://github.com/PuzzleTechHub/nutrimatic/)
+  [main branch](https://github.com/PuzzleTechHub/nutrimatic/)
   with [enwiki-20231201](https://dumps.wikimedia.org/enwiki/20231201/)
