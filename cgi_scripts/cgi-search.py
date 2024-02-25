@@ -136,7 +136,7 @@ EXAMPLES = [
 
 EDITIONS = [
   ("https://nutrimatic.org/2016/", "'classic' original"),
-  ("https://nutrimatic.org/2024/", "current edition"),
+  ("https://nutrimatic.org/2024/", "current edition (refreshed index)"),
 ]
 
 binary = os.environ["NUTRIMATIC_FIND_EXPR"]
