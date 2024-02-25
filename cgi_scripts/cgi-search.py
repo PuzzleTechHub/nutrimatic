@@ -66,8 +66,7 @@ HOME_PAGE_END = """
 <li><a href="usage.html">Usage guide</a>: usage tips,
 worked examples, why it's slow.
 <li><a href="https://github.com/PuzzleTechHub/nutrimatic">Source code</a>:
-not completely documented, but see the <a
-href="https://github.com/PuzzleTechHub/nutrimatic/blob/master/README.md">README</a>.
+not completely documented, but it's there!
 </ul>
 
 </body></html>

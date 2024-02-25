@@ -142,13 +142,15 @@ location /my-nutrimatic/ {
 }
 ```
 
-Have fun,
+### Reproducing public versions
 
--- egnor@ofb.net
+If you want to reproduce historical results from the website, you need
+to build an index from the corresponding Wikipedia data dump using
+compatible index building and searching logic:
 
-
-### Older Versions
-
-If you need the version of [Nutrimatic website](http://nutrimatic.org/) as it was served historically, you will need to rebuild it using the instructions above. For that you need the codebase and website from that time, as well as the Data dump for Wikipedia from the right month ([Link to all historic data dumps](https://archive.org/details/wikimediadownloads?tab=collection&query=enwiki&page=8&sort=date&and%5B%5D=subject%3A%22English%22&and%5B%5D=year%3A%222016%22)).
-
-* Nutrimatic.org (Dec 2016 - Feb 2024) : [Codebase URL](https://github.com/PuzzleTechHub/nutrimatic/tree/0026122178539734d49d5654499879d8fc1709a7). Data dump = [enwiki 1 Nov 2016](https://archive.org/details/enwiki-20161101) (See [#14](https://github.com/PuzzleTechHub/nutrimatic/issues/14))
+* [nutrimatic.org/2016] (Dec 2016 - Feb 2024):
+  [Nutrimatic code](https://github.com/PuzzleTechHub/nutrimatic/tree/0026122178539734d49d5654499879d8fc1709a7)
+  with [enwiki-20161101](https://archive.org/details/enwiki-20161101)
+  ([discussion](https://github.com/PuzzleTechHub/nutrimatic/issues/14))
+* [nutrimatic.org/2024] (Feb 2024 - current): [Nutrimatic code]
+  with [enwiki-20231201](https://dumps.wikimedia.org/enwiki/20231201/)
