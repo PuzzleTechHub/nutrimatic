@@ -4,8 +4,15 @@
 
 (If this doesn't work for you, see the manual steps below.)
 
-1. You'll need a working C++ build system
-   (debian/ubuntu: `sudo apt install build-essential`)
+1. You'll need a working C++ build system, with
+   [Python's dependencies](https://github.com/pyenv/pyenv/wiki#suggested-build-environment); for Debian/Ubuntu:
+   ```
+   sudo apt install \
+       build-essential curl \
+       libbz2-dev libffi-dev liblzma-dev libreadline-dev \
+       libsqlite3-dev libssl-dev libxml2-dev libxmlsec1-dev \
+       tk-dev xz-utils zlib1g-dev
+   ```
 
 2. Install [mise-en-place](https://mise.jdx.dev/) as a tool installer:
    `curl https://mise.run | sh` (or see
@@ -21,7 +28,6 @@
 or you don't like mise...)
 
 1. As above, you'll need C++ build tools
-   (debian/ubuntu: `sudo apt install build-essential`)
 
 2. Use **Python 3.10** (avoids
    [this wikiextractor bug](https://github.com/attardi/wikiextractor/issues/305)

@@ -5,6 +5,7 @@ import os
 import shlex
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 # GENERAL BUILD / DEPENDENCY STRATEGY
@@ -18,7 +19,7 @@ def run_shell(*av, **kw):
     print(f"🐚 {shlex.join(av)}")
     if av[:1] != ["mise"]:
         av = ["mise", "exec", "--", *av]
-    subprocess.run(av, **{"check": True, **kw})
+    return subprocess.run(av, **{"check": True, **kw})
 
 parser = argparse.ArgumentParser(description="Nutrimatic dev environment setup")
 parser.add_argument("--clean", action="store_true", help="Wipe build dir first")
@@ -36,6 +37,12 @@ if not shutil.which("mise"):
     exit(1)
 
 run_shell("mise", "install")
+py_version = run_shell("python3", "-V", capture_output=True, text=True).stdout
+if py_version.startswith("Python 3.10."):
+    print(f"{py_version.strip()} (looks good!)")
+else:
+    print(f"🚨 Wrong Python after 'mise install': {py_version}")
+    exit(1)
 
 print(f"\n➡️ Build dir ({build_dir})")
 if args.clean and build_dir.is_dir():
@@ -73,3 +80,8 @@ run_shell("conan", "remove", "--lru=1d", "--confirm", "*")
 run_shell("conan", "cache", "clean", "*")
 
 print(f"\n😎 Setup complete, build with: conan build .")
+
+env = os.environ
+if not env.get("MISE_SHELL") and "mise/shims" not in env.get("PATH", ""):
+    print("⚠️  Mise isn't shell activated! (mise.jdx.dev/getting-started.html)")
+    print("   Build commands may not work as a result.")
