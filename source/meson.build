@@ -8,15 +8,27 @@ project(
   ],
 )
 
-add_project_arguments(
-  # Disable warnings that openfst headers trigger
-  '-Wno-dangling-pointer',
+# Disable warnings that openfst headers trigger
+if meson.get_compiler('cpp').get_id() == 'clang'
+  # clang-only args
+  extra_toolchain_args = ['-Wno-deprecated-copy']
+else
+  # gcc-only args
+  extra_toolchain_args = [
+    '-Wno-dangling-pointer',
+    '-Wno-missing-template-keyword',
+  ]
+endif
+project_args = [
   '-Wno-ignored-qualifiers',
-  '-Wno-missing-template-keyword',
   '-Wno-sign-compare',
   '-Wno-overloaded-virtual',
   '-Wno-unused-parameter',
   '-Wno-vla',
+] + extra_toolchain_args
+
+add_project_arguments(
+  project_args,
   language: ['cpp'],
 )
 
