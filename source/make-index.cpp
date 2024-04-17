@@ -43,8 +43,9 @@ static void do_line(char const* line, std::vector<string>* out) {
 
 static void write_index(char const* prefix, int num,
                         std::vector<string>* chains) {
-  char filename[strlen(prefix) + 32];
-  sprintf(filename, "%s.%05d.index", prefix, num);
+  size_t buf_len = strlen(prefix) + 32;
+  char filename[buf_len];
+  snprintf(filename, buf_len, "%s.%05d.index", prefix, num);
   FILE *fp = fopen(filename, "w");
   if (fp == NULL) {
     fprintf(stderr, "error: can't open \"%s\"\n", filename);
