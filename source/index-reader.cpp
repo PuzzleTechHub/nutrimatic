@@ -115,6 +115,7 @@ int IndexReader::children(off_t n, int64_t count,
 }
 
 void IndexReader::fail(off_t n, const char* message) const {
-  fprintf(stderr, "error: pos %zd = 0x%02x: %s\n", n, data[n], message);
+  fprintf(stderr, "error: pos %lld = 0x%02x: %s\n", static_cast<long long>(n),
+      data[n], message);
   exit(1);
 }
