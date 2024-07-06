@@ -58,7 +58,7 @@ else:
     exit(1)
 
 print(f"\n➡️ Python setup (pip packages)")
-run_shell("pip", "install", "-r", "dev_requirements.txt")
+run_shell("python3", "-m", "pip", "install", "-r", "dev_requirements.txt")
 
 # Link 'pkg-config' to 'pykg-config.py' to avoid relying on system pkg-config
 venv_bin_dir = build_dir / "python_venv" / "bin"
