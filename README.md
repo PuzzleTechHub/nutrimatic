@@ -4,14 +4,9 @@
 
 (If this doesn't work for you, see the manual steps below.)
 
-1. You'll need a working C++ build system, with
-   [Python's dependencies](https://github.com/pyenv/pyenv/wiki#suggested-build-environment); for Debian/Ubuntu:
+1. You'll need a working C++ build system; for Debian/Ubuntu:
    ```
-   sudo apt install \
-       build-essential curl \
-       libbz2-dev libffi-dev liblzma-dev libreadline-dev \
-       libsqlite3-dev libssl-dev libxml2-dev libxmlsec1-dev \
-       tk-dev xz-utils zlib1g-dev
+   sudo apt install build-essential
    ```
 
 2. Install [mise-en-place](https://mise.jdx.dev/) as a tool installer:

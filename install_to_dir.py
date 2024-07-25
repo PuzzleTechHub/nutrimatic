@@ -8,7 +8,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-parser = argparse.ArgumentParser(description="Nutrimatic installertool")
+parser = argparse.ArgumentParser(description="Nutrimatic installer tool")
 parser.add_argument("output_dir", type=Path, help="Root directory to deploy to")
 args = parser.parse_args()
 output_path = args.output_dir.resolve()  # Resolve before changing directory
