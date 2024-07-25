@@ -6,7 +6,7 @@
 
 1. You'll need a working C++ build system; for Debian/Ubuntu:
    ```
-   sudo apt install build-essential
+   sudo apt install build-essential curl
    ```
 
 2. Install [mise-en-place](https://mise.jdx.dev/) as a tool installer:
