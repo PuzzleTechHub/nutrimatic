@@ -26,7 +26,6 @@
 <li><a href="#examples">Examples from MSPH 12(3)</a>
   <ul>
   <li><a href="#examples_camouflage">Camouflage</a>
-  <li><a href="#examples_triple_sec">Triple Sec</a>
   <li><a href="#examples_dice">Dice</a>
   <li><a href="#examples_walkoffame">Hollywood Walk of Fame</a>
   <li><a href="#examples_murderbydepth">Murder By Depth</a>
@@ -214,38 +213,15 @@ Nutrimatic is unhelpful.</p>
 
 <p>This puzzle included many lines of text like "MOCHIT HATORY" with a blank in
 the middle.  You were instructed to fill in a letter that would make a word
-at least 5 letters using the end of the first part, the filled in letter,
-and the start of the second part.  For that first row, this pattern locates all
-such words:</p>
+at least 5 letters using a possibly-empty suffix of the first part, a filled
+in letter, and a possibly-empty prefix of the second part.  For that first
+row, this pattern locates all such words:</p>
 
-<pre><a href="/?q=%22(((((m?o)?c)?h)?i)t?)_(h(a(t(o(ry?)?)?)?)?)?%26_{5,}%22">"(((((m?o)?c)?h)?i)t?)_(h(a(t(o(ry?)?)?)?)?)?&amp;_{5,}"</a></pre>
+<pre><a href="/?q=%22(((((m?o)?c)?h)?i)?t)?_(h(a(t(o(ry?)?)?)?)?)?%26_{5,}%22">"(((((m?o)?c)?h)?i)t?)_(h(a(t(o(ry?)?)?)?)?)?&amp;_{5,}"</a></pre>
 
 <p>Note that the puzzle directions further require "common non-plural,
 non-capitalized English" words, and that each letter (A-Z) be used exactly once;
 these constraints must be enforced by the human solver.</p>
-
-<h4><a name="examples_triple_sec" href="http://bloodandbones.com/ph12sim/puzzles/Triple%20Sec/">Triple Sec</a></h4>
-
-<p>Among the various other things in this puzzle, you frequently need to
-rearrange a list of letter triples into a clue with some left over:
-
-<p><b>M</b>AY <b>S</b>IT TIT BLE COM IKS IAL IM<b>B</b> <b>M</b>ON</b>
-
-<p>Six of the triples will be used to make a crossword-type clue; the other
-three will be left over for future use.  The boldface letters indicate the
-start of a word in the clue (a word break happens just before each boldface
-letter).  This pattern finds the solution:</p>
-
-<pre><a href="/?q=%22<( may)%3F( sit)%3F(tit)%3F(ble)%3F(com)%3F(iks)%3F(ial)%3F(im b)%3F( mon)%3F>%22%26(%20_{18})">"&lt;( may)?( sit)?(tit)?(ble)?(com)?(iks)?(ial)?(im b)?( mon)?&gt;"&amp;( _{18})</a></pre>
-
-<p>The anagram operator is used to reorder the triples.  Each triple is made
-individually optional in the anagram, but a constraint is added to the end
-requiring the answer to be 18 letters long (i.e. consume 6 triples).  The
-expression is quoted and spaces are used to indicate where word breaks are
-allowed (boldface letters).</p>
-
-<p>The answer "mayim bialiks sitcom" is the first result.  (Mayim Bialik's
-sitcom is "Blossom").</p>
 
 <h4><a name="examples_dice" href="http://bloodandbones.com/ph12sim/puzzles/Dice/">Dice</a></h4>
 
@@ -272,7 +248,7 @@ depicted objects with one letter removed from each.  For example, one of the
 stars contained drawings of CHARM, ELTON, CHEST, and ONE.  This pattern finds
 what can be made from this with one letter dropped from each:</p>
 
-<pre><a href="/?q=(c%3Fh%3Fa%3Fr%3Fm%3F%26____)(e%3Fl%3Ft%3Fo%3Fn%3F%26____)(c%3Fh%3Fe%3Fs%3Ft%3F%26____)(o%3Fn%3Fe%3F%26__)">(c?h?a?r?m?&amp;____)(e?l?t?o?n?&amp;____)(c?h?e?s?t?&amp;____)(o?n?e?&amp;__)</a></pre>
+<pre><a href="/?q=%28c%3Fh%3Fa%3Fr%3Fm%3F%26_%7B4%7D%29%28e%3Fl%3Ft%3Fo%3Fn%3F%26_%7B4%7D%29%28c%3Fh%3Fe%3Fs%3Ft%3F%26_%7B4%7D%29%28o%3Fn%3Fe%3F%26_%7B2%7D%29">(c?h?a?r?m?&amp;_{4})(e?l?t?o?n?&amp;_{4})(c?h?e?s?t?&amp;_{4})(o?n?e?&amp;_{2})</a></pre>
 
 <p>Within each word, every letter is optional, but a constraint is also added
 to the subpattern requiring that N-1 of the letters be used.  The answer
@@ -370,5 +346,5 @@ know, read their mail or something.  So that can add a few seconds when first
 using the service.</p>
 
 <hr>
-<address>updated March 24, 2009 - egnor@ofb.net</address>
+<address>updated Jan 29, 2025 - egnor@ofb.net</address>
 </body></html>
