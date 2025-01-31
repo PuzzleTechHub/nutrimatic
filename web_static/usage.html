@@ -26,6 +26,7 @@
 <li><a href="#examples">Examples from MSPH 12(3)</a>
   <ul>
   <li><a href="#examples_camouflage">Camouflage</a>
+  <li><a href="#examples_triple_sec">Triple Sec</a>
   <li><a href="#examples_dice">Dice</a>
   <li><a href="#examples_walkoffame">Hollywood Walk of Fame</a>
   <li><a href="#examples_murderbydepth">Murder By Depth</a>
@@ -58,21 +59,21 @@ except:</p>
 
 <ul>
 <li><p>Rather than a fixed dictionary, Nutrimatic uses a list of every word and
-phrase that occurs in Wikipedia at least 5 times.  This means that not only are
+phrase that occurs in Wikipedia at least 5 times. This means that not only are
 English words included, but so are many celebrity names, place names,
-catchphrases, famous quotes, common idioms, and so on.  (Unfortunately, it can
+catchphrases, famous quotes, common idioms, and so on. (Unfortunately, it can
 also include common misspellings, like "epsiode" and
 "<a href="http://en.wikipedia.org/wiki/Teh">teh</a>".)</p>
 
 <li><p>Nutrimatic can also match combinations of words and phrases it knows
-about.  If the only vaguely English-like thing that matches your pattern is
+about. If the only vaguely English-like thing that matches your pattern is
 the phrase
 "<a href="http://bloodandbones.com/ph12sim/puzzles/Men%20In%20Black/">subject
 of blood and whiskey</a>", Nutrimatic can find it, without even being told the
 word boundaries.</p>
 
 <li><p>Normally a very large dictionary and support for combined phrases would
-leave you drowning in obscure matches to your query.  (Other systems give you
+leave you drowning in obscure matches to your query. (Other systems give you
 a choice between small dictionaries of common words and large dictionaries with
 many obscure words.)  Nutrimatic orders the results by corpus frequency, so
 "reasonable" matches come first, followed by "stretchy" or "obscure" ones.</p>
@@ -84,13 +85,13 @@ expressions</a> (with <a href="#syntax">some extensions</a>) as well as
 anagrams with missing data) in the same expression language.</p>
 
 <li><p>Nutrimatic is open source, and available as a <a href="/">web
-interface</a> and as command line tools.  (It is not currently available as a
+interface</a> and as command line tools. (It is not currently available as a
 GUI app.)</p>
 
 <li><p>Nutrimatic is kind of slow sometimes, and queries can get cut off if
 they take more than 30 seconds or search more than 1,000,000 nodes.
 Certain expressions, especially involving long anagrams (more than 10-15
-parts) can give the expression parser trouble.  Things which are fast in
+parts) can give the expression parser trouble. Things which are fast in
 other engines, such as matches constrained to single words, are generally
 fast in Nutrimatic, though.</p>
 </ul>
@@ -107,7 +108,7 @@ extended regular expressions</a> (but without POSIX character classes).</p>
 is all lowercase and contains no punctuation -- only letters, numbers, and spaces.
 Most punctuation is turned into spaces, but apostrophes are simply removed, so
 "Fleur-de-lis" shows up as "fleur de lis", and "I'm Jack's total lack of
-surprise." is "im jacks total lack of surprise".  Spaces are matched
+surprise." is "im jacks total lack of surprise". Spaces are matched
 automatically by default; see the section on "<a href="#syntax_quotes">quoted
 phrases</a>" below for details.</p>
 
@@ -139,7 +140,7 @@ allowed anywhere.</p>
 <h4><a name="syntax_quotes">"Quoted Phrases"</a></h4>
 
 <p>By default, Nutrimatic allows spaces to be inserted anywhere in the
-expression when matching.  That means that an expression like
+expression when matching. That means that an expression like
 <tt><a href="/?q=CVCVCVCVCV">CVCVCVCVCV</a></tt> (five alternating
 consonant-vowel pairs) matches words like "literature" as well as phrase
 fragments like "have become" or "was used as a".</p>
@@ -147,7 +148,7 @@ fragments like "have become" or "was used as a".</p>
 <p>To restrict where spaces can be placed, use <tt>"<em>quoted
 phrases</em>"</tt> in the pattern.
 Within the quotation marks, spaces will not be inserted unless the pattern
-specifically allows them.  So the expression
+specifically allows them. So the expression
 <tt><a href="/?q=%22CVCVCVCVCV%22">"CVCVCVCVCV"</a></tt> only matches single
 10-letter words; <tt><a href="/?q=%22CVCVC-VCVCV%22">"CVCVC-VCVCV"</a></tt>
 matches either single words or evenly split pairs of 5-letter words;
@@ -159,28 +160,28 @@ of 5-letter words.</p>
 <h4><a name="syntax_amp">&amp; (Intersection)</a></h4>
 
 <p>By analogy with the standard <tt>|</tt> (alternation) operator, the &amp;
-operator requires both sides to match for the pattern to match.  This is useful
-for applying several constraints in parallel.  For example,
+operator requires both sides to match for the pattern to match. This is useful
+for applying several constraints in parallel. For example,
 <tt><a href="/?q=%22_*a_*%26_*b_*%26_*c_*%26_{5,}%22">"_*a_*&amp;_*b_*&amp;_*c_*&amp;_{5,}"</a></tt>
 matches single words that contain all of "a", "b" and "c" (but in no
 particular order) and are also at least 5 letters long overall.</p>
 
-<p><b>Warning:</b> The <tt>&amp;</tt> operator can be expensive to parse.  Large
+<p><b>Warning:</b> The <tt>&amp;</tt> operator can be expensive to parse. Large
 numbers (10+) of combined expressions can take exponentially long to process.
 This is not an issue in most cases.</p> 
 
 <h4><a name="syntax_anagram">&lt;Anagrams&gt;</a></h4>
 
 <p>Text inside <tt>&lt;<em>angle brackets</em>&gt;</tt> matches anything that
-contains the same parts but in any order.  So
+contains the same parts but in any order. So
 <tt><a href="/?q=%3Ccat%3E">&lt;act&gt;</a></tt> matches "act", "cat", "atc" and
 so on.</p>
 
 <p>The parts of an anagram are normally letters, but can themselves be any
-regular expression (in parentheses).  For example,
+regular expression (in parentheses). For example,
 <tt><a href="/?q=%3C%28ag%29%28m%29%28ra%29__%3E">&lt;(ag)(m)(ra)__&gt;</a></tt>
 matches any 7-letter word or phrase containing "ag", "m", "ra", and any
-other two letters.  Anagrams can also be part of a larger expression, if
+other two letters. Anagrams can also be part of a larger expression, if
 you have partial information about the order of something, such as
 <tt><a href="/?q=%3Caan%3Eg%3Camr%3E">&lt;aan&gt;g&lt;amr&gt;</a></tt> which
 matches "anagram" but not "margana".</p>
@@ -194,7 +195,7 @@ same text, or are deeply nested), can be very slow to parse and to search.</p>
 
 <p><b>Bug:</b> The anagram algorithm isn't perfect -- when using anagrams of 
 wildcards or pieces that aren't single letters, sometimes results will be
-produced that aren't actually an anagram of the input.  If you're using fancy
+produced that aren't actually an anagram of the input. If you're using fancy
 anagram expressions, double-check what you get back.</p>
 
 <h2><a name="examples">Examples from MSPH 12(3)</a></h2>
@@ -212,46 +213,69 @@ Nutrimatic is unhelpful.</p>
 <h4><a name="examples_camouflage" href="http://bloodandbones.com/ph12sim/puzzles/Camouflage/">Camouflage</a></h4>
 
 <p>This puzzle included many lines of text like "MOCHIT HATORY" with a blank in
-the middle.  You were instructed to fill in a letter that would make a word
+the middle. You were instructed to fill in a letter that would make a word
 at least 5 letters using a possibly-empty suffix of the first part, a filled
-in letter, and a possibly-empty prefix of the second part.  For that first
+in letter, and a possibly-empty prefix of the second part. For that first
 row, this pattern locates all such words:</p>
 
-<pre><a href="/?q=%22(((((m?o)?c)?h)?i)?t)?_(h(a(t(o(ry?)?)?)?)?)?%26_{5,}%22">"(((((m?o)?c)?h)?i)t?)_(h(a(t(o(ry?)?)?)?)?)?&amp;_{5,}"</a></pre>
+<pre><a href="/?q=%22(((((m?o)?c)?h)?i)?t)?_(h(a(t(o(ry?)?)?)?)?)?%26_{5,}%22">"(((((m?o)?c)?h)?i)?t)?_(h(a(t(o(ry?)?)?)?)?)?&amp;_{5,}"</a></pre>
 
 <p>Note that the puzzle directions further require "common non-plural,
 non-capitalized English" words, and that each letter (A-Z) be used exactly once;
 these constraints must be enforced by the human solver.</p>
 
+<h4><a name="examples_triple_sec" href="http://bloodandbones.com/ph12sim/puzzles/Triple%20Sec/">Triple Sec</a></h4>
+
+<p>Among the various other things in this puzzle, you frequently need to
+rearrange a list of letter triples into a clue with some left over:
+
+<p><b>M</b>AY <b>S</b>IT TIT BLE COM IKS IAL IM<b>B</b> <b>M</b>ON</b>
+
+<p>Six of the triples will be used to make a crossword-type clue; the other
+three will be left over for future use. The boldface letters indicate the
+start of a word in the clue (a word break happens just before each boldface
+letter). This pattern finds the solution:</p>
+
+<pre><a href="/?q=%22<(-may)%3F(-sit)%3F(tit)%3F(ble)%3F(com)%3F(iks)%3F(ial)%3F(im%20b)%3F(-mon)%3F>%22%26(_{18})">"&lt;(-may)?(-sit)?(tit)?(ble)?(com)?(iks)?(ial)?(im b)?(-mon)?&gt;"&amp;(_{18})</a></pre>
+
+<p>The anagram operator is used to reorder the triples. Each triple is made
+individually optional in the anagram, but a constraint is added to the end
+requiring the answer to be 18 letters long (i.e. consume 6 triples). The
+expression is quoted; spaces and hyphens are used to indicate where word breaks
+can occur (boldface letters).</p>
+
+<p>The answer "mayim bialiks sitcom" is the second result. (Mayim Bialik's
+sitcom is "Blossom").</p>
+
 <h4><a name="examples_dice" href="http://bloodandbones.com/ph12sim/puzzles/Dice/">Dice</a></h4>
 
 <p>After assembling a cube with spots on it, part of the final step in this
 puzzle is to treat each side of the cube as a letter bank (such as AEHIMNPRSW)
-and to determine the phrases that can be formed using that letter bank.  We
+and to determine the phrases that can be formed using that letter bank. We
 assume the puzzle designer didn't include any extraneous letters, so this is
-like an anagram with repeated letters collapsed into one.  This pattern finds
+like an anagram with repeated letters collapsed into one. This pattern finds
 what can be formed from one of these letter banks:</p>
 
 <pre><a href="/?q=[aehimnprsw]*%26_*a_*%26_*e_*%26_*h_*%26_*i_*%26_*m_*%26_*n_*%26_*p_*%26_*r_*%26_*s_*%26_*w_*">[aehimnprsw]*&amp;_*a_*&amp;_*e_*&amp;_*h_*&amp;_*i_*&amp;_*m_*&amp;_*n_*&amp;_*p_*&amp;_*r_*&amp;_*s_*&amp;_*w_*</a></pre>
 
 <p>This rather cumbersome expression requires a phrase made from letters in the
 bank and also (this is the cumbersome part) requires each letter to be used
-at least once somewhere in the phrase.  The answer to this one, "new
-hampshire", comes out on top.  (Turns out each of the six sides decodes to a
+at least once somewhere in the phrase. The answer to this one, "new
+hampshire", comes out on top. (Turns out each of the six sides decodes to a
 state.)</p>
 
 <h4><a name="examples_walkoffame" href="http://bloodandbones.com/ph12sim/puzzles/Hollywood%20Walk%20of%20Fame/">Hollywood Walk of Fame</a></h4>
 
 <p>One of the steps in the second phase of this puzzle involved identifying
 a series of rebus-like drawings, and then concatenating the names of the
-depicted objects with one letter removed from each.  For example, one of the
-stars contained drawings of CHARM, ELTON, CHEST, and ONE.  This pattern finds
+depicted objects with one letter removed from each. For example, one of the
+stars contained drawings of CHARM, ELTON, CHEST, and ONE. This pattern finds
 what can be made from this with one letter dropped from each:</p>
 
 <pre><a href="/?q=%28c%3Fh%3Fa%3Fr%3Fm%3F%26_%7B4%7D%29%28e%3Fl%3Ft%3Fo%3Fn%3F%26_%7B4%7D%29%28c%3Fh%3Fe%3Fs%3Ft%3F%26_%7B4%7D%29%28o%3Fn%3Fe%3F%26_%7B2%7D%29">(c?h?a?r?m?&amp;_{4})(e?l?t?o?n?&amp;_{4})(c?h?e?s?t?&amp;_{4})(o?n?e?&amp;_{2})</a></pre>
 
 <p>Within each word, every letter is optional, but a constraint is also added
-to the subpattern requiring that N-1 of the letters be used.  The answer
+to the subpattern requiring that N-1 of the letters be used. The answer
 "charlton heston" comes out on top.</p>
 
 <h4><a name="examples_murderbydepth" href="http://bloodandbones.com/ph12sim/puzzles/MurderByDepth/">Murder By Depth</a></h4>
@@ -259,18 +283,18 @@ to the subpattern requiring that N-1 of the letters be used.  The answer
 <p>After finding this puzzle in a pool of water, you need to take a number of
 nonsense strings like "SEPAP" and "HEGM" and "add water" by inserting the
 letters W, A, T, E, R -- in that order, but not necessarily consecutively --
-into the given letters.  This pattern finds the answer for HEGM:</p>
+into the given letters. This pattern finds the answer for HEGM:</p>
 
 <pre><a href="/?q=%3Cwaterhegm%3E%26_*w_*a_*t_*e_*r_*">&lt;waterhegm&gt;&amp;_*w_*a_*t_*e_*r_*</a></pre>
 
 <p>The word is required to be an anagram of &lt;waterhegm&gt; with the added
-constraint that the letters in "water" appear in that order.  The answer "wheat
+constraint that the letters in "water" appear in that order. The answer "wheat
 germ" shows up on top.</p>
 
 <h4><a name="examples_mortaljeopardy" href="http://bloodandbones.com/ph12sim/puzzles/Mortal%20Jeopardy/">Mortal Jeopardy</a></h4>
 
 <p>This meta for the third round was quite involved, but in the end produced
-a series of (mostly) three-letter chunks.  The series was in the right order,
+a series of (mostly) three-letter chunks. The series was in the right order,
 but the chunks were scrambled internally:</p>
 
 <pre><a href="/?q=%3Chet%3E%3Cral%3E%3Cseg%3E%3Ctan%3E%3Crut%3E%3Cbla%3E%3Coody%3E%3Cafl%3E%3Cndi%3E%3Ccin%3E%3Cawe%3E%3Cter%3E">&lt;het&gt;&lt;ral&gt;&lt;seg&gt;&lt;tan&gt;&lt;rut&gt;&lt;bla&gt;&lt;oody&gt;&lt;afl&gt;&lt;ndi&gt;&lt;cin&gt;&lt;awe&gt;&lt;ter&gt;</a></pre>
@@ -283,32 +307,32 @@ but the chunks were scrambled internally:</p>
 <p>Internally, Nutrimatic uses a
 <a href="http://en.wikipedia.org/wiki/Trie">trie</a> which includes every word
 or phrase that occurs in Wikipedia at least five times -- 23,744,883 all told,
-packed into a 258MB index file.  Every node in the trie includes a frequency
-count.  (For example, the prefix "th" occurs 75,979,024 times; "qu" occurs
+packed into a 258MB index file. Every node in the trie includes a frequency
+count. (For example, the prefix "th" occurs 75,979,024 times; "qu" occurs
 1,446,508 times.)</p>
 
 <p>When searching for a pattern, Nutrimatic uses a
 <a href="http://en.wikipedia.org/wiki/Best-first_search">best-first search</a>
 through the trie using a priority queue of nodes sorted by frequency.
-The queue initially contains only the root node.  As long as the queue is not
+The queue initially contains only the root node. As long as the queue is not
 empty, the algorithm takes the most frequent node from the queue and examines
-it for compatibility with the search pattern.  If the path to that node
-matches the pattern, it's printed as output.  If the path to that node is a
+it for compatibility with the search pattern. If the path to that node
+matches the pattern, it's printed as output. If the path to that node is a
 possible prefix for the pattern (not necessarily matching the pattern itself),
-then the node's children are all added to the queue.  Then it returns to the
+then the node's children are all added to the queue. Then it returns to the
 next best node in the queue and continues the process.</p>
 
 <p>Whenever a space is encountered in the search, in addition to continuing to
 the children of that node, the search algorithm also continues at the root of
 the trie, allowing two words or phrases to be spliced together if they match
-the pattern.  A heavy frequency penalty is added for this "reset", so that
+the pattern. A heavy frequency penalty is added for this "reset", so that
 phrases which occur naturally are considered before such "frankenphrases".</p>
 
 <p>Because this process can involve evaluating very many nodes, and potentially
 having a very large priority queue of nodes to process, the search expression is
 converted to a
 <a href="http://en.wikipedia.org/wiki/Deterministic_finite_state_machine">deterministic
-finite state machine</a> for rapid evaluation while searching.  The
+finite state machine</a> for rapid evaluation while searching. The
 <a href="http://www.openfst.org/">openfst</a> library is used to create,
 combine and optimize the finite state machine as the query is parsed.</p>
 
@@ -317,21 +341,21 @@ Ordinary regular expressions all compile extremely quickly, but patterns which
 include many "&amp;" operators or long anagrams (which use the "&amp;" operator
 internally for every part of the anagram) can result in large state machines:
 Processing an anagram of length N requires O(2^N) states, and if the parts of
-the anagram are themselves state machines the complexity is multiplied.  If
+the anagram are themselves state machines the complexity is multiplied. If
 more than 30 CPU-seconds are consumed during this phase, the search is
-killed.  Where possible, using more constrained, simpler patterns can help.</p>
+killed. Where possible, using more constrained, simpler patterns can help.</p>
 
 <p>More commonly, the search process itself can take a long time as a large
-number of nodes are visited.  After 1,000,000 nodes are visited, the search is
+number of nodes are visited. After 1,000,000 nodes are visited, the search is
 terminated (with the "Computation limit exceeded" message) whether or not any
 results have been shown.</p>
 
 <p>Because the search proceeds forward from the start of the answer string,
 patterns which are constrained at the beginning work much better than patterns
-which are constrained at the end.  For example,
+which are constrained at the end. For example,
 <tt><a href="/?q=the_*">the_*</a></tt>
 gives results very quickly;
-<tt><a href="/?q=_*est">_*est</a></tt> takes a long time to return.  The first
+<tt><a href="/?q=_*est">_*est</a></tt> takes a long time to return. The first
 pattern can walk the subtrie starting with "the"; the second pattern
 effectively walks every word and phrase in the index in frequency order,
 checking for each one whether it ends in "est".</p>
@@ -342,7 +366,7 @@ words (or you know where word breaks go).</p>
 
 <p>Finally, this particular instance is running on a multi-user computer, and
 the 250MB+ index file has a way of getting paged out when people want to, you
-know, read their mail or something.  So that can add a few seconds when first
+know, read their mail or something. So that can add a few seconds when first
 using the service.</p>
 
 <hr>
