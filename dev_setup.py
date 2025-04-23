@@ -27,24 +27,15 @@ parser.add_argument("--debug", action="store_true", help="Debug build for deps")
 args = parser.parse_args()
 
 top_dir = Path(__file__).resolve().parent
-build_dir = top_dir / "build"
-conan_dir = build_dir / "conan"
 os.chdir(top_dir)
 
-print(f"\n➡️ Build dir ({build_dir})")
-if args.clean and build_dir.is_dir():
-    print("🗑️ WIPING build dir (per --clean)")
-    shutil.rmtree(build_dir)
-    build_dir.mkdir()
-elif build_dir.is_dir():
-    print("🏠 Using existing build dir")
-else:
-    print("🏗️ Creating build dir")
-    build_dir.mkdir()
+if args.clean:
+    print(f"➡️ Cleaning build dir")
+    shutil.rmtree("build", ignore_errors=True)
+    shutil.rmtree("conan.tmp", ignore_errors=True)
+    shutil.rmtree("venv.tmp", ignore_errors=True)
 
-(build_dir / ".gitignore").open("w").write("/*\n")
-
-print(f"➡️ Mise (tool manager) setup")
+print(f"\n➡️ Mise (tool manager) setup")
 if not shutil.which("mise"):
     print("🚨 Please install 'mise' (https://mise.jdx.dev/)")
     exit(1)
@@ -58,10 +49,11 @@ else:
     exit(1)
 
 print(f"\n➡️ Python setup (pip packages)")
-run_shell("python3", "-m", "pip", "install", "-r", "dev_requirements.txt")
+py_packages = ["conan==2.15.1", "cmake==3.28.3", "pykg-config==1.3.0"]
+run_shell("python3", "-m", "pip", "install", *py_packages)
 
 # Link 'pkg-config' to 'pykg-config.py' to avoid relying on system pkg-config
-venv_bin_dir = build_dir / "python_venv" / "bin"
+venv_bin_dir = top_dir / "venv.tmp" / "bin"
 pykg_config_path = venv_bin_dir / "pykg-config.py"
 pkg_config_path = venv_bin_dir / "pkg-config"
 pkg_config_path.unlink(missing_ok=True)
@@ -76,6 +68,7 @@ else:
     exit(1)
 
 print(f"\n➡️ Conan (C++ package manager) setup")
+conan_dir = top_dir / "conan.tmp"
 profile_path = conan_dir / "profiles" / "default"
 run_shell("conan", "profile", "detect", "--name=detected", "--force")
 print(f"⚙️ Writing: {profile_path}")

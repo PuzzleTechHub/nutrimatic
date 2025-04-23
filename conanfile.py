@@ -14,7 +14,7 @@ class NutrimaticConan(conan.ConanFile):
     default_options = {"shared": False}
 
     requires = ["openfst/1.8.2", "libxml2/2.12.4", "tre/cci.20230717"]
-    tool_requires = ["meson/1.3.1", "ninja/1.11.1"]
+    tool_requires = ["meson/1.7.2", "ninja/1.12.1"]
     generators = ["MesonToolchain", "PkgConfigDeps", "VirtualBuildEnv"]
 
     exports_sources = "source/*"

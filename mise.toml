@@ -1,9 +1,9 @@
 [env]
-CONAN_HOME = "{{config_root}}/build/conan"
+CONAN_HOME = "{{config_root}}/conan.tmp"
 
 [tools]
 # Python 3.10 to avoid https://github.com/attardi/wikiextractor/issues/305
-python = {version="3.10", virtualenv="build/python_venv"}
+python = {version="3.10", virtualenv="venv.tmp"}
 
 [settings]
 experimental = true
