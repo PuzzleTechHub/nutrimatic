@@ -28,19 +28,21 @@ PER_PAGE = 100
 
 HOME_PAGE_BEGIN = """
 <html lang="en"><head>
+  <meta charset="utf-8">
   <title>Nutrimatic</title>
   <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-site-verification" content="HYukS48AhdgGIgHndvQBdN5aoJJHHWnvMq_OJfcpVYg" />
 </head><body>
 <p><em>Almost, but not quite, entirely unlike tea.</em></p>
-<form action="" method=get>
+<form action="" method=get accept-charset="utf-8">
 <input type=search name=q size=45 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 <input type=submit name=go value="Go">
 </form>
 <p>Matches patterns against a dictionary of words and phrases
-mined from Wikipedia.  Text is normalized to lowercase letters,
-numbers and spaces.  More common results are returned first.</p>
+mined from Wikipedia.  Text is normalized to lowercase letters
+(Latin and Cyrillic), numbers and spaces.  More common results
+are returned first.  Input is UTF-8.</p>
 """
 
 HOME_PAGE_LIST_BEGIN = """
@@ -78,12 +80,13 @@ not completely documented, but it's there!
 
 RESULT_PAGE_BEGIN = """
 <html lang="en"><head>
+  <meta charset="utf-8">
   <title>%(query)s - Nutrimatic</title>
   <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<form action="" method=get>
+<form action="" method=get accept-charset="utf-8">
 <input type=search name=q value="%(query)s" size=45 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 <input type=submit name=go value="Go">
 </form>
@@ -191,7 +194,9 @@ soft, hard = resource.getrlimit(resource.RLIMIT_AS)
 if hard == -1 or hard > 2048 * 1024 * 1024: hard = 2048 * 1024 * 1024
 resource.setrlimit(resource.RLIMIT_AS, (hard, hard))
 
-proc = subprocess.Popen([binary, index, query],
+# Pass query as UTF-8 bytes so find-expr receives correct encoding (e.g. Cyrillic).
+query_bytes = query.encode('utf-8') if isinstance(query, str) else query
+proc = subprocess.Popen([binary, index, query_bytes],
     preexec_fn=lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL),
     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 

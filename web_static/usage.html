@@ -1,5 +1,6 @@
 <html><head>
-  <title>Nutrimatic Usage Guide</title></head>
+  <meta charset="utf-8">
+  <title>Nutrimatic Usage Guide</title>
   <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
@@ -106,11 +107,12 @@ extended regular expressions</a> (but without POSIX character classes).</p>
 
 <p>The text (words and phrases) being matched has been normalized so that it
 is all lowercase and contains no punctuation -- only letters, numbers, and spaces.
-Most punctuation is turned into spaces, but apostrophes are simply removed, so
-"Fleur-de-lis" shows up as "fleur de lis", and "I'm Jack's total lack of
-surprise." is "im jacks total lack of surprise". Spaces are matched
-automatically by default; see the section on "<a href="#syntax_quotes">quoted
-phrases</a>" below for details.</p>
+Letters can be Latin or Cyrillic (and other scripts if the index was built with
+UTF-8 text). Input and the index are UTF-8. Most punctuation is turned into
+spaces, but apostrophes are simply removed, so "Fleur-de-lis" shows up as
+"fleur de lis", and "I'm Jack's total lack of surprise." is "im jacks total lack
+of surprise". Spaces are matched automatically by default; see the section on
+"<a href="#syntax_quotes">quoted phrases</a>" below for details.</p>
 
 <p>Because only letters and lowercase letters show up in the text, uppercase
 letters and punctuation symbols are available to mean other things in queries.
@@ -126,8 +128,9 @@ commonly used classes of characters:</p>
 <dd><tt><b>C</b></tt> - any consonant (including y), equivalent to
 <tt>[bcdfghjklmnpqrstvwxyz]</tt>
 <dd><tt><b>V</b></tt> - any vowel (excluding y), equivalent to <tt>[aeiou]</tt>
-<dd><tt><b>_</b></tt> (underscore) - any letter or number, equivalent to
-<tt>[a-z0-9]</tt>
+<dd><tt><b>.</b></tt> (dot) - any character: letters (Latin and Cyrillic), digits, space
+<dd><tt><b>_</b></tt> (underscore) - any letter or number (Latin and Cyrillic), equivalent to
+<tt>[a-z0-9]</tt> plus UTF-8 bytes
 <dd><tt><b>-</b></tt> (hyphen) - an optional space, equivalent to <tt>( ?)</tt>
 <dd><tt><b>#</b></tt> (number sign) - any digit, equivalent to <tt>[0-9]</tt>
 </dl>

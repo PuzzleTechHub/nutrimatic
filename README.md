@@ -108,6 +108,32 @@ To actually use Nutrimatic, you will need to build an index from Wikipedia.
      build/find-expr wiki-merged.index '<aciimnrttu>'
      ```
 
+### Building a Russian (Cyrillic) index
+
+Nutrimatic supports UTF-8 and Cyrillic. To build an index from Russian Wikipedia:
+
+1. Download the Russian Wikipedia dump:
+
+     ```
+     wget https://dumps.wikimedia.org/ruwiki/latest/ruwiki-latest-pages-articles.xml.bz2
+     ```
+
+2. Extract with WikiExtractor (same as English):
+
+     ```
+     wikiextractor ruwiki-latest-pages-articles.xml.bz2
+     ```
+
+3. Index and merge the same way (use a distinct prefix if you like):
+
+     ```
+     find text -type f | xargs cat | build/make-index ruwiki
+     ```
+
+   Then merge (e.g. same two-stage merge as above, with `ruwiki` instead of `wikipedia`).
+
+4. Use the merged index the same way: set `NUTRIMATIC_INDEX` to the Russian merged index, or run `find-expr` with it. Queries can use Cyrillic literals and patterns; input is UTF-8.
+
 ### Serving the web interface
 
 If you want to run the [nutrimatic.org](https://nutrimatic.org/) style

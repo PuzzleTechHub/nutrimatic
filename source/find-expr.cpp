@@ -19,6 +19,8 @@ int main(int argc, char *argv[]) {
   chars->AddSymbol("space", ' ');
   for (int i = 33; i <= 127; ++i)
     chars->AddSymbol(std::string(1, i), i);
+  for (int i = 128; i <= 255; ++i)
+    chars->AddSymbol(std::string(1, (char)(unsigned char)i), i);
 
   StdVectorFst parsed;
   parsed.SetInputSymbols(chars);

@@ -139,11 +139,10 @@ const char *ParseAtom(const char *p, StdMutableFst* fst, bool quoted) {
         int first = (unsigned char) *(p - 1);
         int last = (unsigned char) *(p + 1);
         for (int c = first + 1; c <= last; ++c) {
-          if ((c < 'a' || c > 'z') && (c < '0' || c > '9') && c != ' ') {
-            return NULL;
-          } else {
-            chars.push_back(c);
-          }
+          bool allowed = (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
+                        c == ' ' || (c >= 0x80 && c <= 0xFF);
+          if (!allowed) return NULL;
+          chars.push_back((char)(unsigned char)c);
         }
         p += 2;
       } else {
@@ -183,6 +182,9 @@ const char *ParseCharClass(const char *p, std::vector<char>* out) {
   if (p == NULL) return NULL;
   if ((*p >= 'a' && *p <= 'z') || (*p >= '0' && *p <= '9') || *p == ' ') {
     out->push_back(*p);
+  } else if ((unsigned char)*p >= 0x80) {
+    /* UTF-8 byte as literal (byte-level; multi-byte chars are multiple arcs) */
+    out->push_back(*p);
   } else if (*p == '-') {
     out->push_back(0);
     out->push_back(' ');
@@ -190,9 +192,11 @@ const char *ParseCharClass(const char *p, std::vector<char>* out) {
     for (int ch = '0'; ch <= '9'; ++ch) out->push_back(ch);
     for (int ch = 'a'; ch <= 'z'; ++ch) out->push_back(ch);
     out->push_back(' ');
+    for (int ch = 0x80; ch <= 0xFF; ++ch) out->push_back((char)(unsigned char)ch);
   } else if (*p == '_') {
     for (int ch = '0'; ch <= '9'; ++ch) out->push_back(ch);
     for (int ch = 'a'; ch <= 'z'; ++ch) out->push_back(ch);
+    for (int ch = 0x80; ch <= 0xFF; ++ch) out->push_back((char)(unsigned char)ch);
   } else if (*p == '#') {
     for (int ch = '0'; ch <= '9'; ++ch) out->push_back(ch);
   } else if (*p == 'A') {
