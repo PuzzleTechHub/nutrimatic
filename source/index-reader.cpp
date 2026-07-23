@@ -81,7 +81,7 @@ int IndexReader::children(off_t n, int64_t count,
     } else {
       choice.count = 0;
       for (int j = 0; j < count_size; ++j)
-        choice.count |= data[p + 1 + j] << (j * 8);
+        choice.count |= (uint64_t)(data[p + 1 + j]) << (j * 8);
     }
 
     if (choice.count <= 0) fail(p + 1, "bad count");
